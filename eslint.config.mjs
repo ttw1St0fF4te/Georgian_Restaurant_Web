@@ -18,6 +18,7 @@ const eslintConfig = [
       "out/**",
       "build/**",
       "next-env.d.ts",
+      "**/*.css", // Исключить CSS файлы из ESLint проверки
     ],
   },
 ];

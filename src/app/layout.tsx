@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import QueryProvider from "../lib/providers/query-provider";
 import MuiThemeProvider from "../lib/providers/mui-provider";
+import LayoutWrapper from "@/components/layout/LayoutWrapper";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -31,7 +32,9 @@ export default function RootLayout({
       >
         <MuiThemeProvider>
           <QueryProvider>
-            {children}
+            <LayoutWrapper>
+              {children}
+            </LayoutWrapper>
           </QueryProvider>
         </MuiThemeProvider>
       </body>

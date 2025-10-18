@@ -204,3 +204,88 @@ export interface DatabaseInfo {
   user: string;
   connection_status: string;
 }
+
+// Menu types
+export interface MenuCategoryResponseDto {
+  category_id: number;
+  category_name: string;
+  category_description?: string;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export interface MenuItemResponseDto {
+  item_id: number;
+  item_name: string;
+  item_description?: string;
+  category_id: number;
+  price: number;
+  cooking_time_minutes: number;
+  calories?: number;
+  is_vegetarian: boolean;
+  is_spicy: boolean;
+  is_deleted: boolean;
+  image_url?: string;
+  created_at: Date;
+  updated_at: Date;
+  category?: {
+    category_id: number;
+    category_name: string;
+    category_description?: string;
+  };
+}
+
+export interface MenuPaginationResponseDto {
+  items: MenuItemResponseDto[];
+  total: number;
+  page: number;
+  limit: number;
+  pages: number;
+}
+
+export interface MenuFilterDto {
+  search?: string;
+  category_id?: number;
+  is_vegetarian?: boolean;
+  is_spicy?: boolean;
+  min_price?: number;
+  max_price?: number;
+  max_cooking_time?: number;
+  max_calories?: number;
+  sort_by?: 'price' | 'cooking_time_minutes' | 'calories' | 'item_name' | 'created_at';
+  sort_order?: 'ASC' | 'DESC';
+  page?: number;
+  limit?: number;
+}
+
+// Restaurant types
+export interface RestaurantResponseDto {
+  restaurant_id: number;
+  restaurant_name: string;
+  restaurant_description?: string;
+  country: string;
+  city: string;
+  street_address: string;
+  working_hours?: Record<string, string>;
+  is_active: boolean;
+  rating: number;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export interface RestaurantDetailResponseDto extends RestaurantResponseDto {
+  stats?: {
+    total_tables: number;
+    total_capacity: number;
+    total_reviews: number;
+    average_rating: number;
+  };
+}
+
+export interface RestaurantFilterDto {
+  search?: string;
+  city?: string;
+  country?: string;
+  is_active?: boolean;
+  min_rating?: number;
+}

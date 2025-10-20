@@ -7,24 +7,76 @@ import {
   Typography, 
   Box, 
   Button,
-  Container 
+  Container,
+  Menu,
+  MenuItem,
+  Avatar
 } from '@mui/material';
 import { useRouter, usePathname } from 'next/navigation';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
+import PersonIcon from '@mui/icons-material/Person';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import { useAuth } from '@/lib/auth-context';
 
 const Header: React.FC = () => {
   const router = useRouter();
   const pathname = usePathname();
+  const { user, isAuthenticated, logout } = useAuth();
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
-  const navigationItems = [
-    { label: 'Меню', path: '/' },
-    { label: 'Рестораны', path: '/restaurants' },
-    { label: 'О нас', path: '/about' },
-  ];
+  // Навигационные элементы в зависимости от статуса авторизации
+  const getNavigationItems = () => {
+    const baseItems = [
+      { label: 'Меню', path: '/' },
+      { label: 'Рестораны', path: '/restaurants' },
+      { label: 'О нас', path: '/about' },
+    ];
+
+    if (!isAuthenticated) {
+      return [
+        ...baseItems,
+        { label: 'Вход', path: '/auth/login' },
+      ];
+    }
+
+    // Для авторизованных пользователей - добавляем пункты в зависимости от роли
+    if (user?.role === 'user') {
+      return baseItems; // Профиль будет в выпадающем меню
+    }
+
+    return baseItems; // Для admin/manager тоже базовые пункты
+  };
 
   const handleNavigation = (path: string) => {
     router.push(path);
   };
+
+  const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleProfileMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleProfileClick = () => {
+    handleProfileMenuClose();
+    router.push('/profile');
+  };
+
+  const handleLogout = async () => {
+    handleProfileMenuClose();
+    try {
+      await logout();
+      router.push('/');
+    } catch (error) {
+      console.error('Logout failed:', error);
+      // Все равно перенаправляем на главную
+      router.push('/');
+    }
+  };
+
+  const navigationItems = getNavigationItems();
 
   return (
     <AppBar position="sticky" sx={{ backgroundColor: '#2E7D32' }}>
@@ -47,7 +99,7 @@ const Header: React.FC = () => {
           </Box>
 
           {/* Навигационное меню */}
-          <Box sx={{ display: 'flex', gap: 1 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             {navigationItems.map((item) => (
               <Button
                 key={item.path}
@@ -67,6 +119,55 @@ const Header: React.FC = () => {
                 {item.label}
               </Button>
             ))}
+
+            {/* Меню профиля для авторизованных пользователей */}
+            {isAuthenticated && (
+              <>
+                <Button
+                  color="inherit"
+                  onClick={handleProfileMenuOpen}
+                  startIcon={<Avatar sx={{ width: 24, height: 24, bgcolor: '#1B5E20' }}>
+                    <PersonIcon sx={{ fontSize: 16 }} />
+                  </Avatar>}
+                  sx={{
+                    borderRadius: 1,
+                    px: 2,
+                    py: 1,
+                    '&:hover': {
+                      backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                    },
+                  }}
+                >
+                  {user?.first_name}
+                </Button>
+                
+                <Menu
+                  anchorEl={anchorEl}
+                  open={Boolean(anchorEl)}
+                  onClose={handleProfileMenuClose}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                  }}
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                >
+                  {user?.role === 'user' && (
+                    <MenuItem onClick={handleProfileClick}>
+                      <PersonIcon sx={{ mr: 1 }} />
+                      Профиль
+                    </MenuItem>
+                  )}
+                  
+                  <MenuItem onClick={handleLogout}>
+                    <ExitToAppIcon sx={{ mr: 1 }} />
+                    Выход
+                  </MenuItem>
+                </Menu>
+              </>
+            )}
           </Box>
         </Toolbar>
       </Container>

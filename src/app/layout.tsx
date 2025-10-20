@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import QueryProvider from "../lib/providers/query-provider";
 import MuiThemeProvider from "../lib/providers/mui-provider";
+import { AuthProvider } from "../lib/auth-context";
 import LayoutWrapper from "@/components/layout/LayoutWrapper";
 import "./globals.css";
 
@@ -32,9 +33,11 @@ export default function RootLayout({
       >
         <MuiThemeProvider>
           <QueryProvider>
-            <LayoutWrapper>
-              {children}
-            </LayoutWrapper>
+            <AuthProvider>
+              <LayoutWrapper>
+                {children}
+              </LayoutWrapper>
+            </AuthProvider>
           </QueryProvider>
         </MuiThemeProvider>
       </body>

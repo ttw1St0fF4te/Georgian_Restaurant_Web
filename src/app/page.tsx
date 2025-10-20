@@ -15,14 +15,18 @@ import {
   DialogContent,
   DialogActions,
   Chip,
+  Snackbar,
 } from '@mui/material';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { useMenuCategories, useMenu, useMenuItem } from '@/lib/api/hooks';
 import { MenuFilterDto, MenuItemResponseDto } from '@/lib/api/types';
 import MenuFilters from '@/components/menu/MenuFilters';
 import MenuItemCard from '@/components/menu/MenuItemCard';
+import { useCart } from '@/lib/cart-context';
+import { useAuth } from '@/lib/auth-context';
 
 const ITEMS_PER_PAGE = 12;
 
@@ -36,9 +40,14 @@ export default function MenuPage() {
 
   const [selectedItem, setSelectedItem] = useState<MenuItemResponseDto | null>(null);
   const [detailsOpen, setDetailsOpen] = useState(false);
+  const [showSnackbar, setShowSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
 
   const { data: categories = [], isLoading: categoriesLoading } = useMenuCategories();
   const { data: menuData, isLoading: menuLoading, error: menuError } = useMenu(filters);
+  const { addToCart } = useCart();
+  const { isAuthenticated, user } = useAuth();
 
   const handleFiltersChange = (newFilters: MenuFilterDto) => {
     setFilters({
@@ -69,6 +78,35 @@ export default function MenuPage() {
   const handleCloseDetails = () => {
     setDetailsOpen(false);
     setSelectedItem(null);
+  };
+
+  const handleAddToCartFromDetails = async () => {
+    if (!selectedItem) return;
+    
+    if (!isAuthenticated) {
+      setSnackbarMessage('Войдите в систему для добавления товаров в корзину');
+      setShowSnackbar(true);
+      return;
+    }
+
+    if (user?.role !== 'user') {
+      setSnackbarMessage('Только зарегистрированные клиенты могут добавлять товары в корзину');
+      setShowSnackbar(true);
+      return;
+    }
+
+    setIsAddingToCart(true);
+    try {
+      await addToCart(selectedItem.item_id, 1);
+      setSnackbarMessage('Товар добавлен в корзину!');
+      setShowSnackbar(true);
+      handleCloseDetails();
+    } catch (error: any) {
+      setSnackbarMessage(error.message || 'Ошибка при добавлении товара в корзину');
+      setShowSnackbar(true);
+    } finally {
+      setIsAddingToCart(false);
+    }
   };
 
   const isLoading = categoriesLoading || menuLoading;
@@ -254,13 +292,37 @@ export default function MenuPage() {
               <Button onClick={handleCloseDetails}>
                 Закрыть
               </Button>
-              <Button variant="contained" color="primary">
-                Добавить в заказ
-              </Button>
+              {isAuthenticated && user?.role === 'user' && (
+                <Button 
+                  variant="contained" 
+                  color="primary"
+                  startIcon={isAddingToCart ? <CircularProgress size={16} color="inherit" /> : <AddShoppingCartIcon />}
+                  onClick={handleAddToCartFromDetails}
+                  disabled={isAddingToCart}
+                >
+                  {isAddingToCart ? 'Добавляем...' : 'Добавить в корзину'}
+                </Button>
+              )}
             </DialogActions>
           </>
         )}
       </Dialog>
+
+      {/* Уведомления */}
+      <Snackbar
+        open={showSnackbar}
+        autoHideDuration={3000}
+        onClose={() => setShowSnackbar(false)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert 
+          onClose={() => setShowSnackbar(false)} 
+          severity={snackbarMessage.includes('Ошибка') ? 'error' : 'success'}
+          sx={{ width: '100%' }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Container>
   );
 }

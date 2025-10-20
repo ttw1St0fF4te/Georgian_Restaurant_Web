@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import QueryProvider from "../lib/providers/query-provider";
 import MuiThemeProvider from "../lib/providers/mui-provider";
 import { AuthProvider } from "../lib/auth-context";
+import { CartProvider } from "../lib/cart-context";
 import LayoutWrapper from "@/components/layout/LayoutWrapper";
 import "./globals.css";
 
@@ -34,9 +35,11 @@ export default function RootLayout({
         <MuiThemeProvider>
           <QueryProvider>
             <AuthProvider>
-              <LayoutWrapper>
-                {children}
-              </LayoutWrapper>
+              <CartProvider>
+                <LayoutWrapper>
+                  {children}
+                </LayoutWrapper>
+              </CartProvider>
             </AuthProvider>
           </QueryProvider>
         </MuiThemeProvider>

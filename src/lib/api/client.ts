@@ -26,9 +26,9 @@ export interface ApiError {
 // Интерцептор запросов - добавляем JWT токен если есть
 apiClient.interceptors.request.use(
   (config) => {
-    // Получаем токен из localStorage (когда будет реализована авторизация)
+    // Получаем токен из localStorage
     if (typeof window !== 'undefined') {
-      const token = localStorage.getItem('auth_token');
+      const token = localStorage.getItem('georgian_restaurant_token');
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }
@@ -52,11 +52,12 @@ apiClient.interceptors.response.use(
       error: error.response?.data?.error,
     };
 
-    // Если 401 - перенаправляем на логин (когда будет реализована авторизация)
+    // Если 401 - перенаправляем на логин
     if (error.response?.status === 401) {
       if (typeof window !== 'undefined') {
-        localStorage.removeItem('auth_token');
-        // router.push('/login'); - добавим позже
+        localStorage.removeItem('georgian_restaurant_token');
+        localStorage.removeItem('georgian_restaurant_user');
+        window.location.href = '/auth/login';
       }
     }
 

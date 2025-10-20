@@ -16,12 +16,16 @@ import { useRouter, usePathname } from 'next/navigation';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
 import PersonIcon from '@mui/icons-material/Person';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { Badge, IconButton } from '@mui/material';
 import { useAuth } from '@/lib/auth-context';
+import { useCart } from '@/lib/cart-context';
 
 const Header: React.FC = () => {
   const router = useRouter();
   const pathname = usePathname();
   const { user, isAuthenticated, logout } = useAuth();
+  const { getTotalItems } = useCart();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   // Навигационные элементы в зависимости от статуса авторизации
@@ -119,6 +123,23 @@ const Header: React.FC = () => {
                 {item.label}
               </Button>
             ))}
+
+            {/* Кнопка корзины для авторизованных пользователей-клиентов */}
+            {isAuthenticated && user?.role === 'user' && (
+              <IconButton
+                color="inherit"
+                onClick={() => handleNavigation('/cart')}
+                sx={{
+                  '&:hover': {
+                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                  },
+                }}
+              >
+                <Badge badgeContent={getTotalItems()} color="error">
+                  <ShoppingCartIcon />
+                </Badge>
+              </IconButton>
+            )}
 
             {/* Меню профиля для авторизованных пользователей */}
             {isAuthenticated && (

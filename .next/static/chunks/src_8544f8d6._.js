@@ -938,7 +938,55 @@ const CartProvider = (param)=>{
                 setLoading(true);
                 setError(null);
                 const updatedCart = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2f$cart$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cartService"].addToCart(itemId, quantity);
-                setCart(updatedCart);
+                // Сохраняем порядок товаров при добавлении
+                if (cart && cart.items.length > 0) {
+                    // Проверяем, есть ли уже такой товар в корзине
+                    const existingItemIndex = cart.items.findIndex({
+                        "CartProvider.useCallback[addToCart].existingItemIndex": (item)=>item.item_id === itemId
+                    }["CartProvider.useCallback[addToCart].existingItemIndex"]);
+                    if (existingItemIndex !== -1) {
+                        // Товар уже есть - обновляем его количество на том же месте
+                        const orderedItems = cart.items.map({
+                            "CartProvider.useCallback[addToCart].orderedItems": (originalItem)=>{
+                                const updatedItem = updatedCart.items.find({
+                                    "CartProvider.useCallback[addToCart].orderedItems.updatedItem": (item)=>item.item_id === originalItem.item_id
+                                }["CartProvider.useCallback[addToCart].orderedItems.updatedItem"]);
+                                return updatedItem || originalItem;
+                            }
+                        }["CartProvider.useCallback[addToCart].orderedItems"]);
+                        setCart({
+                            ...updatedCart,
+                            items: orderedItems
+                        });
+                    } else {
+                        // Новый товар - добавляем в конец
+                        const existingItems = cart.items.map({
+                            "CartProvider.useCallback[addToCart].existingItems": (originalItem)=>{
+                                const updatedItem = updatedCart.items.find({
+                                    "CartProvider.useCallback[addToCart].existingItems.updatedItem": (item)=>item.item_id === originalItem.item_id
+                                }["CartProvider.useCallback[addToCart].existingItems.updatedItem"]);
+                                return updatedItem || originalItem;
+                            }
+                        }["CartProvider.useCallback[addToCart].existingItems"]);
+                        const newItem = updatedCart.items.find({
+                            "CartProvider.useCallback[addToCart].newItem": (item)=>item.item_id === itemId
+                        }["CartProvider.useCallback[addToCart].newItem"]);
+                        if (newItem) {
+                            setCart({
+                                ...updatedCart,
+                                items: [
+                                    ...existingItems,
+                                    newItem
+                                ]
+                            });
+                        } else {
+                            setCart(updatedCart);
+                        }
+                    }
+                } else {
+                    // Корзина пуста или нет товаров - просто устанавливаем новую корзину
+                    setCart(updatedCart);
+                }
             } catch (error) {
                 handleError(error, 'Ошибка добавления товара в корзину');
                 throw error;
@@ -979,7 +1027,23 @@ const CartProvider = (param)=>{
                 }
                 // Отправляем запрос на сервер
                 const updatedCart = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2f$cart$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cartService"].updateCartItem(itemId, quantity);
-                setCart(updatedCart);
+                // Сохраняем оригинальный порядок товаров
+                if (cart) {
+                    const orderedItems = cart.items.map({
+                        "CartProvider.useCallback[updateCartItem].orderedItems": (originalItem)=>{
+                            const updatedItem = updatedCart.items.find({
+                                "CartProvider.useCallback[updateCartItem].orderedItems.updatedItem": (item)=>item.item_id === originalItem.item_id
+                            }["CartProvider.useCallback[updateCartItem].orderedItems.updatedItem"]);
+                            return updatedItem || originalItem;
+                        }
+                    }["CartProvider.useCallback[updateCartItem].orderedItems"]);
+                    setCart({
+                        ...updatedCart,
+                        items: orderedItems
+                    });
+                } else {
+                    setCart(updatedCart);
+                }
             } catch (error) {
                 // Откатываем изменения в случае ошибки
                 setCart(previousCart);
@@ -993,20 +1057,40 @@ const CartProvider = (param)=>{
     // Удалить товар из корзины
     const removeFromCart = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "CartProvider.useCallback[removeFromCart]": async (itemId)=>{
+            const previousCart = cart;
             try {
-                setLoading(true);
                 setError(null);
+                // Оптимистичное удаление: обновляем UI сразу
+                if (cart) {
+                    const updatedItems = cart.items.filter({
+                        "CartProvider.useCallback[removeFromCart].updatedItems": (item)=>item.item_id !== itemId
+                    }["CartProvider.useCallback[removeFromCart].updatedItems"]);
+                    const totalItems = updatedItems.reduce({
+                        "CartProvider.useCallback[removeFromCart].totalItems": (sum, item)=>sum + item.quantity
+                    }["CartProvider.useCallback[removeFromCart].totalItems"], 0);
+                    const totalAmount = updatedItems.reduce({
+                        "CartProvider.useCallback[removeFromCart].totalAmount": (sum, item)=>sum + item.total_price
+                    }["CartProvider.useCallback[removeFromCart].totalAmount"], 0);
+                    setCart({
+                        ...cart,
+                        items: updatedItems,
+                        total_items: totalItems,
+                        total_amount: totalAmount
+                    });
+                }
+                // Отправляем запрос на сервер
                 const updatedCart = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2f$cart$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cartService"].removeFromCart(itemId);
                 setCart(updatedCart);
             } catch (error) {
+                // Откатываем изменения в случае ошибки
+                setCart(previousCart);
                 handleError(error, 'Ошибка удаления товара из корзины');
-                // В случае ошибки показываем ошибку, но не перезагружаем всю корзину
                 throw error;
-            } finally{
-                setLoading(false);
             }
         }
-    }["CartProvider.useCallback[removeFromCart]"], []);
+    }["CartProvider.useCallback[removeFromCart]"], [
+        cart
+    ]);
     // Очистить корзину
     const clearCart = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "CartProvider.useCallback[clearCart]": async ()=>{
@@ -1070,7 +1154,7 @@ const CartProvider = (param)=>{
         children: children
     }, void 0, false, {
         fileName: "[project]/src/lib/cart-context.tsx",
-        lineNumber: 194,
+        lineNumber: 261,
         columnNumber: 5
     }, ("TURBOPACK compile-time value", void 0));
 };

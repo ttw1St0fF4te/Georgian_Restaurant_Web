@@ -81,7 +81,44 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
       setLoading(true);
       setError(null);
       const updatedCart = await cartService.addToCart(itemId, quantity);
-      setCart(updatedCart);
+      
+      // Сохраняем порядок товаров при добавлении
+      if (cart && cart.items.length > 0) {
+        // Проверяем, есть ли уже такой товар в корзине
+        const existingItemIndex = cart.items.findIndex(item => item.item_id === itemId);
+        
+        if (existingItemIndex !== -1) {
+          // Товар уже есть - обновляем его количество на том же месте
+          const orderedItems = cart.items.map(originalItem => {
+            const updatedItem = updatedCart.items.find(item => item.item_id === originalItem.item_id);
+            return updatedItem || originalItem;
+          });
+          
+          setCart({
+            ...updatedCart,
+            items: orderedItems
+          });
+        } else {
+          // Новый товар - добавляем в конец
+          const existingItems = cart.items.map(originalItem => {
+            const updatedItem = updatedCart.items.find(item => item.item_id === originalItem.item_id);
+            return updatedItem || originalItem;
+          });
+          
+          const newItem = updatedCart.items.find(item => item.item_id === itemId);
+          if (newItem) {
+            setCart({
+              ...updatedCart,
+              items: [...existingItems, newItem]
+            });
+          } else {
+            setCart(updatedCart);
+          }
+        }
+      } else {
+        // Корзина пуста или нет товаров - просто устанавливаем новую корзину
+        setCart(updatedCart);
+      }
     } catch (error: any) {
       handleError(error, 'Ошибка добавления товара в корзину');
       throw error;
@@ -118,7 +155,21 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
       
       // Отправляем запрос на сервер
       const updatedCart = await cartService.updateCartItem(itemId, quantity);
-      setCart(updatedCart);
+      
+      // Сохраняем оригинальный порядок товаров
+      if (cart) {
+        const orderedItems = cart.items.map(originalItem => {
+          const updatedItem = updatedCart.items.find(item => item.item_id === originalItem.item_id);
+          return updatedItem || originalItem;
+        });
+        
+        setCart({
+          ...updatedCart,
+          items: orderedItems
+        });
+      } else {
+        setCart(updatedCart);
+      }
     } catch (error: any) {
       // Откатываем изменения в случае ошибки
       setCart(previousCart);
@@ -129,19 +180,35 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
 
   // Удалить товар из корзины
   const removeFromCart = useCallback(async (itemId: number) => {
+    const previousCart = cart;
+    
     try {
-      setLoading(true);
       setError(null);
+      
+      // Оптимистичное удаление: обновляем UI сразу
+      if (cart) {
+        const updatedItems = cart.items.filter(item => item.item_id !== itemId);
+        const totalItems = updatedItems.reduce((sum, item) => sum + item.quantity, 0);
+        const totalAmount = updatedItems.reduce((sum, item) => sum + item.total_price, 0);
+        
+        setCart({
+          ...cart,
+          items: updatedItems,
+          total_items: totalItems,
+          total_amount: totalAmount
+        });
+      }
+      
+      // Отправляем запрос на сервер
       const updatedCart = await cartService.removeFromCart(itemId);
       setCart(updatedCart);
     } catch (error: any) {
+      // Откатываем изменения в случае ошибки
+      setCart(previousCart);
       handleError(error, 'Ошибка удаления товара из корзины');
-      // В случае ошибки показываем ошибку, но не перезагружаем всю корзину
       throw error;
-    } finally {
-      setLoading(false);
     }
-  }, []);
+  }, [cart]);
 
   // Очистить корзину
   const clearCart = useCallback(async () => {

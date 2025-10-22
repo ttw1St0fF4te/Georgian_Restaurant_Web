@@ -289,3 +289,70 @@ export interface RestaurantFilterDto {
   is_active?: boolean;
   min_rating?: number;
 }
+
+// Reviews types
+export interface ReviewResponseDto {
+  review_id: string;
+  user_id: string;
+  restaurant_id: number;
+  rating: number;
+  review_text?: string;
+  created_at: string;
+  updated_at: string;
+  user?: {
+    user_id: string;
+    username: string;
+    first_name: string;
+    last_name: string;
+  };
+  restaurant?: {
+    restaurant_id: number;
+    restaurant_name: string;
+  };
+}
+
+export interface CreateReviewDto {
+  restaurant_id: number;
+  rating: number;
+  review_text?: string;
+}
+
+export interface UpdateReviewDto {
+  rating?: number;
+  review_text?: string;
+}
+
+export interface ReviewFilterDto {
+  restaurantId?: number;
+  userId?: string;
+  minRating?: number;
+  maxRating?: number;
+  sortBy?: 'created_at' | 'rating' | 'updated_at';
+  sortOrder?: 'ASC' | 'DESC';
+  page?: number;
+  limit?: number;
+}
+
+export interface PaginatedReviewsDto {
+  reviews: ReviewResponseDto[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+  hasNext: boolean;
+  hasPrev: boolean;
+}
+
+export interface ReviewStatsDto {
+  restaurantId: number;
+  totalReviews: number;
+  averageRating: number;
+  ratingDistribution: {
+    1: number;
+    2: number;
+    3: number;
+    4: number;
+    5: number;
+  };
+  recentReviews: ReviewResponseDto[];
+}

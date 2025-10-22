@@ -31,6 +31,7 @@ import PhoneIcon from '@mui/icons-material/Phone';
 import { useRestaurants } from '@/lib/api/hooks';
 import { RestaurantFilterDto, RestaurantResponseDto } from '@/lib/api/types';
 import RestaurantCard from '@/components/restaurant/RestaurantCard';
+import RestaurantReviews from '@/components/reviews/RestaurantReviews';
 
 export default function RestaurantsPage() {
   const [filters, setFilters] = useState<RestaurantFilterDto>({});
@@ -270,8 +271,14 @@ export default function RestaurantsPage() {
       <Dialog 
         open={detailsOpen} 
         onClose={handleCloseDetails}
-        maxWidth="md"
+        maxWidth="lg"
         fullWidth
+        PaperProps={{
+          sx: { 
+            height: '90vh',
+            maxHeight: '90vh',
+          }
+        }}
       >
         {selectedRestaurant && (
           <>
@@ -300,7 +307,10 @@ export default function RestaurantsPage() {
               </Box>
             </DialogTitle>
             
-            <DialogContent>
+            <DialogContent sx={{ 
+              overflowY: 'auto',
+              maxHeight: 'calc(90vh - 200px)', // Учитываем высоту заголовка и действий
+            }}>
               {selectedRestaurant.restaurant_description && (
                 <>
                   <Typography variant="body1" sx={{ mb: 3, lineHeight: 1.6 }}>
@@ -356,6 +366,13 @@ export default function RestaurantsPage() {
                   </Box>
                 </>
               )}
+
+              {/* Отзывы */}
+              <Divider sx={{ my: 3 }} />
+              <RestaurantReviews 
+                restaurantId={selectedRestaurant.restaurant_id}
+                restaurantName={selectedRestaurant.restaurant_name}
+              />
             </DialogContent>
 
             <DialogActions sx={{ px: 3, pb: 3 }}>

@@ -99,6 +99,7 @@
       --tw-rotate-z: initial;
       --tw-skew-x: initial;
       --tw-skew-y: initial;
+      --tw-border-style: solid;
       --tw-ease: initial;
     }
 
@@ -108,6 +109,7 @@
       --tw-rotate-z: initial;
       --tw-skew-x: initial;
       --tw-skew-y: initial;
+      --tw-border-style: solid;
       --tw-ease: initial;
     }
   }
@@ -484,40 +486,6 @@
     position: sticky;
   }
 
-  .container {
-    width: 100%;
-  }
-
-  @media (min-width: 40rem) {
-    .container {
-      max-width: 40rem;
-    }
-  }
-
-  @media (min-width: 48rem) {
-    .container {
-      max-width: 48rem;
-    }
-  }
-
-  @media (min-width: 64rem) {
-    .container {
-      max-width: 64rem;
-    }
-  }
-
-  @media (min-width: 80rem) {
-    .container {
-      max-width: 80rem;
-    }
-  }
-
-  @media (min-width: 96rem) {
-    .container {
-      max-width: 96rem;
-    }
-  }
-
   .flex {
     display: flex;
   }
@@ -534,12 +502,17 @@
     display: table;
   }
 
+  .shrink {
+    flex-shrink: 1;
+  }
+
   .transform {
     transform: var(--tw-rotate-x, ) var(--tw-rotate-y, ) var(--tw-rotate-z, ) var(--tw-skew-x, ) var(--tw-skew-y, );
   }
 
-  .italic {
-    font-style: italic;
+  .border {
+    border-style: var(--tw-border-style);
+    border-width: 1px;
   }
 
   .underline {
@@ -605,6 +578,12 @@ body {
 @property --tw-skew-y {
   syntax: "*";
   inherits: false
+}
+
+@property --tw-border-style {
+  syntax: "*";
+  inherits: false;
+  initial-value: solid;
 }
 
 @property --tw-ease {

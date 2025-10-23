@@ -1,9 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { MenuService, RestaurantService } from './services';
 import { reviewsApi } from './reviews';
+import { reservationsApi } from './reservations';
 import { MenuFilterParams } from './services/menu';
 import { RestaurantFilterParams } from './services/restaurant';
 import { ReviewFilterDto, CreateReviewDto, UpdateReviewDto } from './types';
+import { CreateReservationDto } from './reservations';
 
 // Menu hooks
 export const useMenuCategories = () => {
@@ -191,6 +193,104 @@ export const useDeleteMyRestaurantReview = () => {
       // Обновляем информацию о ресторане
       queryClient.invalidateQueries({ 
         queryKey: ['restaurants', restaurantId] 
+      });
+    },
+  });
+};
+
+// Reservations hooks
+export const useUserActiveReservations = () => {
+  return useQuery({
+    queryKey: ['reservations', 'my', 'active'],
+    queryFn: reservationsApi.getUserActiveReservations,
+    staleTime: 30 * 1000, // 30 секунд - часто обновляем для актуальности
+  });
+};
+
+export const useUserReservations = () => {
+  return useQuery({
+    queryKey: ['reservations', 'my'],
+    queryFn: reservationsApi.getUserReservations,
+    staleTime: 2 * 60 * 1000, // 2 минуты
+  });
+};
+
+export const useRestaurantTables = (restaurantId: number) => {
+  return useQuery({
+    queryKey: ['restaurants', restaurantId, 'tables'],
+    queryFn: () => reservationsApi.getRestaurantTables(restaurantId),
+    enabled: !!restaurantId,
+    staleTime: 5 * 60 * 1000, // 5 минут
+  });
+};
+
+export const useTableAvailability = (restaurantId: number, tableId: number, date: string) => {
+  return useQuery({
+    queryKey: ['reservations', 'availability', restaurantId, tableId, date],
+    queryFn: () => reservationsApi.getTableAvailability(restaurantId, tableId, date),
+    enabled: !!restaurantId && !!tableId && !!date,
+    staleTime: 1 * 60 * 1000, // 1 минута - быстро обновляем для точности
+  });
+};
+
+// Reservations mutations
+export const useCreateReservation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (reservationData: CreateReservationDto) => reservationsApi.createReservation(reservationData),
+    onSuccess: () => {
+      // Обновляем активные бронирования пользователя
+      queryClient.invalidateQueries({ 
+        queryKey: ['reservations', 'my', 'active'] 
+      });
+      // Обновляем все бронирования пользователя
+      queryClient.invalidateQueries({ 
+        queryKey: ['reservations', 'my'] 
+      });
+      // Обновляем доступность столиков
+      queryClient.invalidateQueries({ 
+        queryKey: ['reservations', 'availability'] 
+      });
+    },
+  });
+};
+
+export const useConfirmReservation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (reservationId: string) => reservationsApi.confirmReservation(reservationId),
+    onSuccess: () => {
+      // Обновляем активные бронирования пользователя
+      queryClient.invalidateQueries({ 
+        queryKey: ['reservations', 'my', 'active'] 
+      });
+      // Обновляем все бронирования пользователя
+      queryClient.invalidateQueries({ 
+        queryKey: ['reservations', 'my'] 
+      });
+    },
+  });
+};
+
+export const useCancelReservation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (reservationId: string) => reservationsApi.cancelReservation(reservationId),
+    onSuccess: () => {
+      // Обновляем активные бронирования пользователя
+      queryClient.invalidateQueries({ 
+        queryKey: ['reservations', 'my', 'active'] 
+      });
+      // Обновляем все бронирования пользователя
+      queryClient.invalidateQueries({ 
+        queryKey: ['reservations', 'my'] 
+      });
+      // Обновляем доступность столиков
+      queryClient.invalidateQueries({ 
+        queryKey: ['reservations', 'availability'] 
       });
     },
   });

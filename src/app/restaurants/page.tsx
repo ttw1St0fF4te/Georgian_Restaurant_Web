@@ -379,7 +379,14 @@ export default function RestaurantsPage() {
               <Button onClick={handleCloseDetails}>
                 Закрыть
               </Button>
-              <Button variant="contained" color="primary">
+              <Button 
+                variant="contained" 
+                color="primary"
+                onClick={() => {
+                  // Переходим на страницу бронирования с выбранным рестораном
+                  window.location.href = `/reservations/create?restaurant=${selectedRestaurant.restaurant_id}`;
+                }}
+              >
                 Забронировать стол
               </Button>
             </DialogActions>

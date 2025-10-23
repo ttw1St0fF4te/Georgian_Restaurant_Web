@@ -769,7 +769,7 @@ const CartPage = ()=>{
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Typography$2f$Typography$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__["Typography"], {
                                             variant: "body1",
                                             color: "success.main",
-                                            children: "Бесплатно"
+                                            children: "5% при доставке на дом"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/cart/page.tsx",
                                             lineNumber: 165,
@@ -839,10 +839,7 @@ const CartPage = ()=>{
                                     sx: {
                                         py: 1.5
                                     },
-                                    onClick: ()=>{
-                                        // TODO: Переход к оформлению заказа
-                                        console.log('Proceed to checkout');
-                                    },
+                                    onClick: ()=>router.push('/checkout'),
                                     children: "Оформить заказ"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/cart/page.tsx",
@@ -859,7 +856,7 @@ const CartPage = ()=>{
                                     children: "Продолжить покупки"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/cart/page.tsx",
-                                    lineNumber: 195,
+                                    lineNumber: 192,
                                     columnNumber: 15
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
@@ -889,7 +886,7 @@ const CartPage = ()=>{
                         children: "Очистить корзину?"
                     }, void 0, false, {
                         fileName: "[project]/src/app/cart/page.tsx",
-                        lineNumber: 215,
+                        lineNumber: 212,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$DialogContent$2f$DialogContent$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__DialogContent$3e$__["DialogContent"], {
@@ -897,12 +894,12 @@ const CartPage = ()=>{
                             children: "Вы уверены, что хотите удалить все товары из корзины? Это действие нельзя отменить."
                         }, void 0, false, {
                             fileName: "[project]/src/app/cart/page.tsx",
-                            lineNumber: 219,
+                            lineNumber: 216,
                             columnNumber: 11
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/src/app/cart/page.tsx",
-                        lineNumber: 218,
+                        lineNumber: 215,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$DialogActions$2f$DialogActions$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__DialogActions$3e$__["DialogActions"], {
@@ -912,7 +909,7 @@ const CartPage = ()=>{
                                 children: "Отмена"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/cart/page.tsx",
-                                lineNumber: 225,
+                                lineNumber: 222,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Button$2f$Button$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__["Button"], {
@@ -922,19 +919,19 @@ const CartPage = ()=>{
                                 children: "Очистить"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/cart/page.tsx",
-                                lineNumber: 228,
+                                lineNumber: 225,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/cart/page.tsx",
-                        lineNumber: 224,
+                        lineNumber: 221,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/cart/page.tsx",
-                lineNumber: 209,
+                lineNumber: 206,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0))
         ]

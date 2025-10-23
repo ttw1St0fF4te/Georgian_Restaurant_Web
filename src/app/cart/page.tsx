@@ -163,7 +163,7 @@ const CartPage: React.FC = () => {
                   Доставка:
                 </Typography>
                 <Typography variant="body1" color="success.main">
-                  Бесплатно
+                  5% при доставке на дом
                 </Typography>
               </Box>
               
@@ -184,10 +184,7 @@ const CartPage: React.FC = () => {
                 fullWidth
                 size="large"
                 sx={{ py: 1.5 }}
-                onClick={() => {
-                  // TODO: Переход к оформлению заказа
-                  console.log('Proceed to checkout');
-                }}
+                onClick={() => router.push('/checkout')}
               >
                 Оформить заказ
               </Button>

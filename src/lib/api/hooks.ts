@@ -2,10 +2,12 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { MenuService, RestaurantService } from './services';
 import { reviewsApi } from './reviews';
 import { reservationsApi } from './reservations';
+import { ordersApi } from './orders';
 import { MenuFilterParams } from './services/menu';
 import { RestaurantFilterParams } from './services/restaurant';
 import { ReviewFilterDto, CreateReviewDto, UpdateReviewDto } from './types';
 import { CreateReservationDto } from './reservations';
+import { CreateOrderDto } from './orders';
 
 // Menu hooks
 export const useMenuCategories = () => {
@@ -291,6 +293,67 @@ export const useCancelReservation = () => {
       // Обновляем доступность столиков
       queryClient.invalidateQueries({ 
         queryKey: ['reservations', 'availability'] 
+      });
+    },
+  });
+};
+
+// Orders hooks
+export const useUserOrders = () => {
+  return useQuery({
+    queryKey: ['orders', 'my'],
+    queryFn: ordersApi.getUserOrders,
+    staleTime: 2 * 60 * 1000, // 2 минуты
+  });
+};
+
+export const useOrder = (orderId: string) => {
+  return useQuery({
+    queryKey: ['orders', orderId],
+    queryFn: () => ordersApi.getOrder(orderId),
+    enabled: !!orderId,
+    staleTime: 5 * 60 * 1000, // 5 минут
+  });
+};
+
+export const useUserAddress = () => {
+  return useQuery({
+    queryKey: ['user', 'address'],
+    queryFn: ordersApi.getUserAddress,
+    staleTime: 5 * 60 * 1000, // 5 минут
+  });
+};
+
+// Получение активных бронирований со статусом 'started' для заказа в ресторане
+export const useUserStartedReservations = () => {
+  return useQuery({
+    queryKey: ['reservations', 'my', 'started'],
+    queryFn: async () => {
+      const reservations = await reservationsApi.getUserActiveReservations();
+      return reservations.filter(r => r.reservation_status === 'started');
+    },
+    staleTime: 30 * 1000, // 30 секунд - часто обновляем для актуальности
+  });
+};
+
+// Orders mutations
+export const useCreateOrder = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (orderData: CreateOrderDto) => ordersApi.createOrder(orderData),
+    onSuccess: () => {
+      // Обновляем заказы пользователя
+      queryClient.invalidateQueries({ 
+        queryKey: ['orders', 'my'] 
+      });
+      // Обновляем корзину (она должна очиститься после заказа)
+      queryClient.invalidateQueries({ 
+        queryKey: ['cart'] 
+      });
+      // Обновляем активные бронирования (если заказ был в ресторане)
+      queryClient.invalidateQueries({ 
+        queryKey: ['reservations', 'my', 'active'] 
       });
     },
   });

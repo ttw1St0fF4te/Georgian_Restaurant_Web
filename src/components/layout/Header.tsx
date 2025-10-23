@@ -20,6 +20,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { Badge, IconButton } from '@mui/material';
 import { useAuth } from '@/lib/auth-context';
 import { useCart } from '@/lib/cart-context';
+import ActiveReservationBadge from '@/components/reservations/ActiveReservationBadge';
 
 const Header: React.FC = () => {
   const router = useRouter();
@@ -139,6 +140,11 @@ const Header: React.FC = () => {
                   <ShoppingCartIcon />
                 </Badge>
               </IconButton>
+            )}
+
+            {/* Активное бронирование для авторизованных пользователей-клиентов */}
+            {isAuthenticated && user?.role === 'user' && (
+              <ActiveReservationBadge />
             )}
 
             {/* Меню профиля для авторизованных пользователей */}

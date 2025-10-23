@@ -26,7 +26,7 @@ import {
   Select,
   MenuItem,
 } from '@mui/material';
-import { Edit as EditIcon, Person as PersonIcon } from '@mui/icons-material';
+import { Edit as EditIcon, Person as PersonIcon, Event as EventIcon } from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
 import { authService } from '@/lib/auth';
@@ -670,6 +670,18 @@ const ProfilePage: React.FC = () => {
         </Box>
 
         <Divider sx={{ my: 3 }} />
+
+        {/* Быстрые действия */}
+        <Box sx={{ display: 'flex', gap: 2, mb: 3, flexWrap: 'wrap' }}>
+          <Button
+            variant="outlined"
+            startIcon={<EventIcon />}
+            onClick={() => router.push('/profile/reservations')}
+            sx={{ flex: '1 1 200px' }}
+          >
+            Мои бронирования
+          </Button>
+        </Box>
 
         {/* Кнопка смены пароля */}
         <Button

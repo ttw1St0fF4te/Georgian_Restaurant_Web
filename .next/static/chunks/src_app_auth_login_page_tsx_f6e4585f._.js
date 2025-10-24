@@ -32,7 +32,7 @@ var _s = __turbopack_context__.k.signature();
 const LoginPage = ()=>{
     _s();
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"])();
-    const { login, isAuthenticated, isLoading: authLoading } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$auth$2d$context$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAuth"])();
+    const { login, isAuthenticated, isLoading: authLoading, user } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$auth$2d$context$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAuth"])();
     const [formData, setFormData] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])({
         usernameOrEmail: '',
         password: ''
@@ -43,13 +43,21 @@ const LoginPage = ()=>{
     // Редирект если уже авторизован (только после завершения загрузки)
     __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].useEffect({
         "LoginPage.useEffect": ()=>{
-            if (!authLoading && isAuthenticated) {
-                router.push('/');
+            if (!authLoading && isAuthenticated && user) {
+                // Редирект в зависимости от роли пользователя
+                if (user.role === 'manager') {
+                    router.push('/manager');
+                } else if (user.role === 'admin') {
+                    router.push('/admin');
+                } else {
+                    router.push('/');
+                }
             }
         }
     }["LoginPage.useEffect"], [
         authLoading,
         isAuthenticated,
+        user,
         router
     ]);
     const handleInputChange = (field)=>(event)=>{
@@ -102,8 +110,7 @@ const LoginPage = ()=>{
         setErrors([]);
         try {
             await login(formData.usernameOrEmail, formData.password);
-            // Успешный вход - редирект на главную страницу
-            router.push('/');
+        // Редирект будет выполнен в useEffect после обновления user
         } catch (error) {
             // Логируем ошибку только в режиме разработки
             if ("TURBOPACK compile-time truthy", 1) {
@@ -144,7 +151,7 @@ const LoginPage = ()=>{
                     children: "Вход в систему"
                 }, void 0, false, {
                     fileName: "[project]/src/app/auth/login/page.tsx",
-                    lineNumber: 122,
+                    lineNumber: 129,
                     columnNumber: 9
                 }, ("TURBOPACK compile-time value", void 0)),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Typography$2f$Typography$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__["Typography"], {
@@ -157,7 +164,7 @@ const LoginPage = ()=>{
                     children: "Войдите в свой аккаунт для доступа к персональным функциям"
                 }, void 0, false, {
                     fileName: "[project]/src/app/auth/login/page.tsx",
-                    lineNumber: 126,
+                    lineNumber: 133,
                     columnNumber: 9
                 }, ("TURBOPACK compile-time value", void 0)),
                 errors.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Alert$2f$Alert$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Alert$3e$__["Alert"], {
@@ -170,12 +177,12 @@ const LoginPage = ()=>{
                             children: error
                         }, index, false, {
                             fileName: "[project]/src/app/auth/login/page.tsx",
-                            lineNumber: 133,
+                            lineNumber: 140,
                             columnNumber: 15
                         }, ("TURBOPACK compile-time value", void 0)))
                 }, void 0, false, {
                     fileName: "[project]/src/app/auth/login/page.tsx",
-                    lineNumber: 131,
+                    lineNumber: 138,
                     columnNumber: 11
                 }, ("TURBOPACK compile-time value", void 0)),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
@@ -203,7 +210,7 @@ const LoginPage = ()=>{
                             helperText: fieldErrors.usernameOrEmail
                         }, void 0, false, {
                             fileName: "[project]/src/app/auth/login/page.tsx",
-                            lineNumber: 141,
+                            lineNumber: 148,
                             columnNumber: 11
                         }, ("TURBOPACK compile-time value", void 0)),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$TextField$2f$TextField$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TextField$3e$__["TextField"], {
@@ -223,7 +230,7 @@ const LoginPage = ()=>{
                             helperText: fieldErrors.password
                         }, void 0, false, {
                             fileName: "[project]/src/app/auth/login/page.tsx",
-                            lineNumber: 158,
+                            lineNumber: 165,
                             columnNumber: 11
                         }, ("TURBOPACK compile-time value", void 0)),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Button$2f$Button$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__["Button"], {
@@ -241,13 +248,13 @@ const LoginPage = ()=>{
                                 color: "inherit"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/auth/login/page.tsx",
-                                lineNumber: 181,
+                                lineNumber: 188,
                                 columnNumber: 36
                             }, void 0) : undefined,
                             children: isLoading ? 'Вход...' : 'Войти'
                         }, void 0, false, {
                             fileName: "[project]/src/app/auth/login/page.tsx",
-                            lineNumber: 175,
+                            lineNumber: 182,
                             columnNumber: 11
                         }, ("TURBOPACK compile-time value", void 0)),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
@@ -272,44 +279,44 @@ const LoginPage = ()=>{
                                             children: "Зарегистрироваться"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/auth/login/page.tsx",
-                                            lineNumber: 190,
+                                            lineNumber: 197,
                                             columnNumber: 17
                                         }, ("TURBOPACK compile-time value", void 0))
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/auth/login/page.tsx",
-                                        lineNumber: 189,
+                                        lineNumber: 196,
                                         columnNumber: 15
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/auth/login/page.tsx",
-                                lineNumber: 187,
+                                lineNumber: 194,
                                 columnNumber: 13
                             }, ("TURBOPACK compile-time value", void 0))
                         }, void 0, false, {
                             fileName: "[project]/src/app/auth/login/page.tsx",
-                            lineNumber: 186,
+                            lineNumber: 193,
                             columnNumber: 11
                         }, ("TURBOPACK compile-time value", void 0))
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/auth/login/page.tsx",
-                    lineNumber: 140,
+                    lineNumber: 147,
                     columnNumber: 9
                 }, ("TURBOPACK compile-time value", void 0))
             ]
         }, void 0, true, {
             fileName: "[project]/src/app/auth/login/page.tsx",
-            lineNumber: 121,
+            lineNumber: 128,
             columnNumber: 7
         }, ("TURBOPACK compile-time value", void 0))
     }, void 0, false, {
         fileName: "[project]/src/app/auth/login/page.tsx",
-        lineNumber: 120,
+        lineNumber: 127,
         columnNumber: 5
     }, ("TURBOPACK compile-time value", void 0));
 };
-_s(LoginPage, "2z4PC1qWxaruNmUxQgN2NBsjt3M=", false, function() {
+_s(LoginPage, "hgtt6g0Xbz/kooIFZSxr39Zq8qQ=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"],
         __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$auth$2d$context$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAuth"]

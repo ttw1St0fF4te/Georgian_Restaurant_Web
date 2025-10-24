@@ -44,12 +44,21 @@ const Header: React.FC = () => {
       ];
     }
 
+    // Для менеджера - специальные пункты навигации
+    if (user?.role === 'manager') {
+      return [
+        { label: 'Управление меню', path: '/manager/menu' },
+        { label: 'Создание бронирований', path: '/manager/reservations' },
+        { label: 'Отчетность', path: '/manager/reports' },
+      ];
+    }
+
     // Для авторизованных пользователей - добавляем пункты в зависимости от роли
     if (user?.role === 'user') {
       return baseItems; // Профиль будет в выпадающем меню
     }
 
-    return baseItems; // Для admin/manager тоже базовые пункты
+    return baseItems; // Для admin тоже базовые пункты
   };
 
   const handleNavigation = (path: string) => {
@@ -185,6 +194,13 @@ const Header: React.FC = () => {
                     <MenuItem onClick={handleProfileClick}>
                       <PersonIcon sx={{ mr: 1 }} />
                       Профиль
+                    </MenuItem>
+                  )}
+                  
+                  {user?.role === 'manager' && (
+                    <MenuItem onClick={() => { handleProfileMenuClose(); router.push('/manager'); }}>
+                      <PersonIcon sx={{ mr: 1 }} />
+                      Панель менеджера
                     </MenuItem>
                   )}
                   

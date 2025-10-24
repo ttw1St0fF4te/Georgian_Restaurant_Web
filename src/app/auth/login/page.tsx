@@ -15,10 +15,11 @@ import {
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/lib/auth-context';
+import { authService } from '@/lib/auth';
 
 const LoginPage: React.FC = () => {
   const router = useRouter();
-  const { login, isAuthenticated, isLoading: authLoading } = useAuth();
+  const { login, isAuthenticated, isLoading: authLoading, user } = useAuth();
   
   const [formData, setFormData] = useState({
     usernameOrEmail: '',
@@ -31,10 +32,17 @@ const LoginPage: React.FC = () => {
 
   // Редирект если уже авторизован (только после завершения загрузки)
   React.useEffect(() => {
-    if (!authLoading && isAuthenticated) {
-      router.push('/');
+    if (!authLoading && isAuthenticated && user) {
+      // Редирект в зависимости от роли пользователя
+      if (user.role === 'manager') {
+        router.push('/manager');
+      } else if (user.role === 'admin') {
+        router.push('/admin');
+      } else {
+        router.push('/');
+      }
     }
-  }, [authLoading, isAuthenticated, router]);
+  }, [authLoading, isAuthenticated, user, router]);
 
   const handleInputChange = (field: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -97,8 +105,7 @@ const LoginPage: React.FC = () => {
 
     try {
       await login(formData.usernameOrEmail, formData.password);
-      // Успешный вход - редирект на главную страницу
-      router.push('/');
+      // Редирект будет выполнен в useEffect после обновления user
     } catch (error: any) {
       // Логируем ошибку только в режиме разработки
       if (process.env.NODE_ENV === 'development') {

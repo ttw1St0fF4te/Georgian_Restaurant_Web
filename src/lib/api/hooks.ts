@@ -3,7 +3,7 @@ import { MenuService, RestaurantService } from './services';
 import { reviewsApi } from './reviews';
 import { reservationsApi } from './reservations';
 import { ordersApi } from './orders';
-import { MenuFilterParams } from './services/menu';
+import { MenuFilterParams, CreateMenuItemDto, UpdateMenuItemDto } from './services/menu';
 import { RestaurantFilterParams } from './services/restaurant';
 import { ReviewFilterDto, CreateReviewDto, UpdateReviewDto } from './types';
 import { CreateReservationDto } from './reservations';
@@ -354,6 +354,90 @@ export const useCreateOrder = () => {
       // Обновляем активные бронирования (если заказ был в ресторане)
       queryClient.invalidateQueries({ 
         queryKey: ['reservations', 'my', 'active'] 
+      });
+    },
+  });
+};
+
+// === ХУКИ ДЛЯ УПРАВЛЕНИЯ МЕНЮ (МЕНЕДЖЕР) ===
+
+// Получить все блюда включая удаленные (для менеджера)
+export const useAllMenuItems = (filters?: MenuFilterParams) => {
+  return useQuery({
+    queryKey: ['menu', 'all', filters],
+    queryFn: () => MenuService.getAllMenuItems(filters),
+    staleTime: 1 * 60 * 1000, // 1 минута - часто обновляем для актуальности
+  });
+};
+
+// Создать блюдо
+export const useCreateMenuItem = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (menuItemData: CreateMenuItemDto) => MenuService.createMenuItem(menuItemData),
+    onSuccess: () => {
+      // Обновляем все запросы меню
+      queryClient.invalidateQueries({ 
+        queryKey: ['menu'] 
+      });
+    },
+  });
+};
+
+// Обновить блюдо
+export const useUpdateMenuItem = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, data }: { id: number; data: UpdateMenuItemDto }) =>
+      MenuService.updateMenuItem(id, data),
+    onSuccess: (data) => {
+      // Обновляем конкретное блюдо
+      queryClient.invalidateQueries({ 
+        queryKey: ['menu', 'items', data.item_id] 
+      });
+      // Обновляем все запросы меню
+      queryClient.invalidateQueries({ 
+        queryKey: ['menu'] 
+      });
+    },
+  });
+};
+
+// Мягкое удаление блюда
+export const useSoftDeleteMenuItem = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: number) => MenuService.softDeleteMenuItem(id),
+    onSuccess: (data) => {
+      // Обновляем конкретное блюдо
+      queryClient.invalidateQueries({ 
+        queryKey: ['menu', 'items', data.item_id] 
+      });
+      // Обновляем все запросы меню
+      queryClient.invalidateQueries({ 
+        queryKey: ['menu'] 
+      });
+    },
+  });
+};
+
+// Восстановить блюдо
+export const useRestoreMenuItem = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: number) => MenuService.restoreMenuItem(id),
+    onSuccess: (data) => {
+      // Обновляем конкретное блюдо
+      queryClient.invalidateQueries({ 
+        queryKey: ['menu', 'items', data.item_id] 
+      });
+      // Обновляем все запросы меню
+      queryClient.invalidateQueries({ 
+        queryKey: ['menu'] 
       });
     },
   });

@@ -16,6 +16,52 @@ export interface MenuFilterParams {
   limit?: number;
 }
 
+// Типы для создания и обновления блюд
+export interface CreateMenuItemDto {
+  item_name: string;
+  item_description?: string;
+  category_id: number;
+  price: number;
+  cooking_time_minutes?: number;
+  calories?: number;
+  is_vegetarian?: boolean;
+  is_spicy?: boolean;
+  image_url?: string;
+}
+
+export interface UpdateMenuItemDto {
+  item_name?: string;
+  item_description?: string;
+  category_id?: number;
+  price?: number;
+  cooking_time_minutes?: number;
+  calories?: number;
+  is_vegetarian?: boolean;
+  is_spicy?: boolean;
+  image_url?: string;
+}
+
+export interface MenuItemResponseDto {
+  item_id: number;
+  item_name: string;
+  item_description?: string;
+  category_id: number;
+  price: number;
+  cooking_time_minutes: number;
+  calories?: number;
+  is_vegetarian: boolean;
+  is_spicy: boolean;
+  is_deleted: boolean;
+  image_url?: string;
+  created_at: string;
+  updated_at: string;
+  category?: {
+    category_id: number;
+    category_name: string;
+    category_description?: string;
+  };
+}
+
 export class MenuService {
   // Получить все категории меню
   static async getCategories() {
@@ -44,6 +90,40 @@ export class MenuService {
   // Получить блюдо по ID
   static async getMenuItemById(id: number) {
     const response = await apiClient.get(`/menu/${id}`);
+    return response.data;
+  }
+
+  // === ФУНКЦИИ ДЛЯ МЕНЕДЖЕРА ===
+
+  // Создать новое блюдо
+  static async createMenuItem(data: CreateMenuItemDto): Promise<MenuItemResponseDto> {
+    const response = await apiClient.post('/menu', data);
+    return response.data;
+  }
+
+  // Обновить блюдо
+  static async updateMenuItem(id: number, data: UpdateMenuItemDto): Promise<MenuItemResponseDto> {
+    console.log('MenuService.updateMenuItem called with:', { id, data });
+    const response = await apiClient.patch(`/menu/${id}`, data);
+    console.log('MenuService.updateMenuItem response:', response.data);
+    return response.data;
+  }
+
+  // Мягкое удаление блюда (is_deleted = true)
+  static async softDeleteMenuItem(id: number): Promise<MenuItemResponseDto> {
+    const response = await apiClient.patch(`/menu/${id}/soft-delete`);
+    return response.data;
+  }
+
+  // Восстановить удаленное блюдо (is_deleted = false)
+  static async restoreMenuItem(id: number): Promise<MenuItemResponseDto> {
+    const response = await apiClient.patch(`/menu/${id}/restore`);
+    return response.data;
+  }
+
+  // Получить все блюда включая удаленные (для менеджера)
+  static async getAllMenuItems(filters?: MenuFilterParams) {
+    const response = await apiClient.get('/menu/all', { params: filters });
     return response.data;
   }
 }

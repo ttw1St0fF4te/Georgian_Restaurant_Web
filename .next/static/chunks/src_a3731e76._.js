@@ -729,6 +729,14 @@ apiClient.interceptors.request.use((config)=>{
         const token = localStorage.getItem('georgian_restaurant_token');
         if (token) {
             config.headers.Authorization = "Bearer ".concat(token);
+            console.log('🔑 Request with token:', {
+                url: config.url,
+                method: config.method,
+                hasToken: !!token,
+                tokenPreview: token ? token.substring(0, 20) + '...' : null
+            });
+        } else {
+            console.log('⚠️ No token found for request:', config.url);
         }
     }
     return config;
@@ -739,14 +747,22 @@ apiClient.interceptors.request.use((config)=>{
 apiClient.interceptors.response.use((response)=>{
     return response;
 }, (error)=>{
-    var _error_response_data, _error_response, _error_response1, _error_response_data1, _error_response2, _error_response3;
+    var _error_config, _error_config1, _error_response, _error_response1, _error_response_data, _error_response2, _error_response3, _error_response_data1, _error_response4, _error_response5;
+    console.log('🚨 API Error:', {
+        url: (_error_config = error.config) === null || _error_config === void 0 ? void 0 : _error_config.url,
+        method: (_error_config1 = error.config) === null || _error_config1 === void 0 ? void 0 : _error_config1.method,
+        status: (_error_response = error.response) === null || _error_response === void 0 ? void 0 : _error_response.status,
+        data: (_error_response1 = error.response) === null || _error_response1 === void 0 ? void 0 : _error_response1.data,
+        message: error.message
+    });
     const apiError = {
-        message: ((_error_response = error.response) === null || _error_response === void 0 ? void 0 : (_error_response_data = _error_response.data) === null || _error_response_data === void 0 ? void 0 : _error_response_data.message) || error.message || 'Неизвестная ошибка',
-        status: ((_error_response1 = error.response) === null || _error_response1 === void 0 ? void 0 : _error_response1.status) || 500,
-        error: (_error_response2 = error.response) === null || _error_response2 === void 0 ? void 0 : (_error_response_data1 = _error_response2.data) === null || _error_response_data1 === void 0 ? void 0 : _error_response_data1.error
+        message: ((_error_response2 = error.response) === null || _error_response2 === void 0 ? void 0 : (_error_response_data = _error_response2.data) === null || _error_response_data === void 0 ? void 0 : _error_response_data.message) || error.message || 'Неизвестная ошибка',
+        status: ((_error_response3 = error.response) === null || _error_response3 === void 0 ? void 0 : _error_response3.status) || 500,
+        error: (_error_response4 = error.response) === null || _error_response4 === void 0 ? void 0 : (_error_response_data1 = _error_response4.data) === null || _error_response_data1 === void 0 ? void 0 : _error_response_data1.error
     };
     // Если 401 - перенаправляем на логин
-    if (((_error_response3 = error.response) === null || _error_response3 === void 0 ? void 0 : _error_response3.status) === 401) {
+    if (((_error_response5 = error.response) === null || _error_response5 === void 0 ? void 0 : _error_response5.status) === 401) {
+        console.log('🚨 401 Unauthorized - clearing auth data and redirecting to login');
         if ("TURBOPACK compile-time truthy", 1) {
             localStorage.removeItem('georgian_restaurant_token');
             localStorage.removeItem('georgian_restaurant_user');
@@ -1272,6 +1288,39 @@ class MenuService {
         const response = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2f$client$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["apiClient"].get("/menu/".concat(id));
         return response.data;
     }
+    // === ФУНКЦИИ ДЛЯ МЕНЕДЖЕРА ===
+    // Создать новое блюдо
+    static async createMenuItem(data) {
+        const response = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2f$client$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["apiClient"].post('/menu', data);
+        return response.data;
+    }
+    // Обновить блюдо
+    static async updateMenuItem(id, data) {
+        console.log('MenuService.updateMenuItem called with:', {
+            id,
+            data
+        });
+        const response = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2f$client$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["apiClient"].patch("/menu/".concat(id), data);
+        console.log('MenuService.updateMenuItem response:', response.data);
+        return response.data;
+    }
+    // Мягкое удаление блюда (is_deleted = true)
+    static async softDeleteMenuItem(id) {
+        const response = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2f$client$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["apiClient"].patch("/menu/".concat(id, "/soft-delete"));
+        return response.data;
+    }
+    // Восстановить удаленное блюдо (is_deleted = false)
+    static async restoreMenuItem(id) {
+        const response = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2f$client$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["apiClient"].patch("/menu/".concat(id, "/restore"));
+        return response.data;
+    }
+    // Получить все блюда включая удаленные (для менеджера)
+    static async getAllMenuItems(filters) {
+        const response = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2f$client$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["apiClient"].get('/menu/all', {
+            params: filters
+        });
+        return response.data;
+    }
 }
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
     __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
@@ -1472,10 +1521,14 @@ if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelper
 "use strict";
 
 __turbopack_context__.s([
+    "useAllMenuItems",
+    ()=>useAllMenuItems,
     "useCancelReservation",
     ()=>useCancelReservation,
     "useConfirmReservation",
     ()=>useConfirmReservation,
+    "useCreateMenuItem",
+    ()=>useCreateMenuItem,
     "useCreateOrder",
     ()=>useCreateOrder,
     "useCreateReservation",
@@ -1510,10 +1563,16 @@ __turbopack_context__.s([
     ()=>useRestaurantTables,
     "useRestaurants",
     ()=>useRestaurants,
+    "useRestoreMenuItem",
+    ()=>useRestoreMenuItem,
     "useReview",
     ()=>useReview,
+    "useSoftDeleteMenuItem",
+    ()=>useSoftDeleteMenuItem,
     "useTableAvailability",
     ()=>useTableAvailability,
+    "useUpdateMenuItem",
+    ()=>useUpdateMenuItem,
     "useUpdateReview",
     ()=>useUpdateReview,
     "useUserActiveReservations",
@@ -1536,7 +1595,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2f$service
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2f$reviews$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/api/reviews.ts [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2f$reservations$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/api/reservations.ts [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2f$orders$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/api/orders.ts [app-client] (ecmascript)");
-var _s = __turbopack_context__.k.signature(), _s1 = __turbopack_context__.k.signature(), _s2 = __turbopack_context__.k.signature(), _s3 = __turbopack_context__.k.signature(), _s4 = __turbopack_context__.k.signature(), _s5 = __turbopack_context__.k.signature(), _s6 = __turbopack_context__.k.signature(), _s7 = __turbopack_context__.k.signature(), _s8 = __turbopack_context__.k.signature(), _s9 = __turbopack_context__.k.signature(), _s10 = __turbopack_context__.k.signature(), _s11 = __turbopack_context__.k.signature(), _s12 = __turbopack_context__.k.signature(), _s13 = __turbopack_context__.k.signature(), _s14 = __turbopack_context__.k.signature(), _s15 = __turbopack_context__.k.signature(), _s16 = __turbopack_context__.k.signature(), _s17 = __turbopack_context__.k.signature(), _s18 = __turbopack_context__.k.signature(), _s19 = __turbopack_context__.k.signature(), _s20 = __turbopack_context__.k.signature(), _s21 = __turbopack_context__.k.signature(), _s22 = __turbopack_context__.k.signature(), _s23 = __turbopack_context__.k.signature(), _s24 = __turbopack_context__.k.signature(), _s25 = __turbopack_context__.k.signature(), _s26 = __turbopack_context__.k.signature();
+var _s = __turbopack_context__.k.signature(), _s1 = __turbopack_context__.k.signature(), _s2 = __turbopack_context__.k.signature(), _s3 = __turbopack_context__.k.signature(), _s4 = __turbopack_context__.k.signature(), _s5 = __turbopack_context__.k.signature(), _s6 = __turbopack_context__.k.signature(), _s7 = __turbopack_context__.k.signature(), _s8 = __turbopack_context__.k.signature(), _s9 = __turbopack_context__.k.signature(), _s10 = __turbopack_context__.k.signature(), _s11 = __turbopack_context__.k.signature(), _s12 = __turbopack_context__.k.signature(), _s13 = __turbopack_context__.k.signature(), _s14 = __turbopack_context__.k.signature(), _s15 = __turbopack_context__.k.signature(), _s16 = __turbopack_context__.k.signature(), _s17 = __turbopack_context__.k.signature(), _s18 = __turbopack_context__.k.signature(), _s19 = __turbopack_context__.k.signature(), _s20 = __turbopack_context__.k.signature(), _s21 = __turbopack_context__.k.signature(), _s22 = __turbopack_context__.k.signature(), _s23 = __turbopack_context__.k.signature(), _s24 = __turbopack_context__.k.signature(), _s25 = __turbopack_context__.k.signature(), _s26 = __turbopack_context__.k.signature(), _s27 = __turbopack_context__.k.signature(), _s28 = __turbopack_context__.k.signature(), _s29 = __turbopack_context__.k.signature(), _s30 = __turbopack_context__.k.signature(), _s31 = __turbopack_context__.k.signature();
 ;
 ;
 ;
@@ -2232,6 +2291,152 @@ _s26(useCreateOrder, "YK0wzM21ECnncaq5SECwU+/SVdQ=", false, function() {
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useMutation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMutation"]
     ];
 });
+const useAllMenuItems = (filters)=>{
+    _s27();
+    return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useQuery$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useQuery"])({
+        queryKey: [
+            'menu',
+            'all',
+            filters
+        ],
+        queryFn: {
+            "useAllMenuItems.useQuery": ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2f$services$2f$menu$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["MenuService"].getAllMenuItems(filters)
+        }["useAllMenuItems.useQuery"],
+        staleTime: 1 * 60 * 1000
+    });
+};
+_s27(useAllMenuItems, "4ZpngI1uv+Uo3WQHEZmTQ5FNM+k=", false, function() {
+    return [
+        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useQuery$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useQuery"]
+    ];
+});
+const useCreateMenuItem = ()=>{
+    _s28();
+    const queryClient = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$QueryClientProvider$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useQueryClient"])();
+    return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useMutation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMutation"])({
+        mutationFn: {
+            "useCreateMenuItem.useMutation": (menuItemData)=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2f$services$2f$menu$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["MenuService"].createMenuItem(menuItemData)
+        }["useCreateMenuItem.useMutation"],
+        onSuccess: {
+            "useCreateMenuItem.useMutation": ()=>{
+                // Обновляем все запросы меню
+                queryClient.invalidateQueries({
+                    queryKey: [
+                        'menu'
+                    ]
+                });
+            }
+        }["useCreateMenuItem.useMutation"]
+    });
+};
+_s28(useCreateMenuItem, "YK0wzM21ECnncaq5SECwU+/SVdQ=", false, function() {
+    return [
+        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$QueryClientProvider$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useQueryClient"],
+        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useMutation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMutation"]
+    ];
+});
+const useUpdateMenuItem = ()=>{
+    _s29();
+    const queryClient = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$QueryClientProvider$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useQueryClient"])();
+    return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useMutation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMutation"])({
+        mutationFn: {
+            "useUpdateMenuItem.useMutation": (param)=>{
+                let { id, data } = param;
+                return __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2f$services$2f$menu$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["MenuService"].updateMenuItem(id, data);
+            }
+        }["useUpdateMenuItem.useMutation"],
+        onSuccess: {
+            "useUpdateMenuItem.useMutation": (data)=>{
+                // Обновляем конкретное блюдо
+                queryClient.invalidateQueries({
+                    queryKey: [
+                        'menu',
+                        'items',
+                        data.item_id
+                    ]
+                });
+                // Обновляем все запросы меню
+                queryClient.invalidateQueries({
+                    queryKey: [
+                        'menu'
+                    ]
+                });
+            }
+        }["useUpdateMenuItem.useMutation"]
+    });
+};
+_s29(useUpdateMenuItem, "YK0wzM21ECnncaq5SECwU+/SVdQ=", false, function() {
+    return [
+        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$QueryClientProvider$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useQueryClient"],
+        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useMutation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMutation"]
+    ];
+});
+const useSoftDeleteMenuItem = ()=>{
+    _s30();
+    const queryClient = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$QueryClientProvider$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useQueryClient"])();
+    return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useMutation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMutation"])({
+        mutationFn: {
+            "useSoftDeleteMenuItem.useMutation": (id)=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2f$services$2f$menu$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["MenuService"].softDeleteMenuItem(id)
+        }["useSoftDeleteMenuItem.useMutation"],
+        onSuccess: {
+            "useSoftDeleteMenuItem.useMutation": (data)=>{
+                // Обновляем конкретное блюдо
+                queryClient.invalidateQueries({
+                    queryKey: [
+                        'menu',
+                        'items',
+                        data.item_id
+                    ]
+                });
+                // Обновляем все запросы меню
+                queryClient.invalidateQueries({
+                    queryKey: [
+                        'menu'
+                    ]
+                });
+            }
+        }["useSoftDeleteMenuItem.useMutation"]
+    });
+};
+_s30(useSoftDeleteMenuItem, "YK0wzM21ECnncaq5SECwU+/SVdQ=", false, function() {
+    return [
+        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$QueryClientProvider$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useQueryClient"],
+        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useMutation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMutation"]
+    ];
+});
+const useRestoreMenuItem = ()=>{
+    _s31();
+    const queryClient = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$QueryClientProvider$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useQueryClient"])();
+    return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useMutation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMutation"])({
+        mutationFn: {
+            "useRestoreMenuItem.useMutation": (id)=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2f$services$2f$menu$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["MenuService"].restoreMenuItem(id)
+        }["useRestoreMenuItem.useMutation"],
+        onSuccess: {
+            "useRestoreMenuItem.useMutation": (data)=>{
+                // Обновляем конкретное блюдо
+                queryClient.invalidateQueries({
+                    queryKey: [
+                        'menu',
+                        'items',
+                        data.item_id
+                    ]
+                });
+                // Обновляем все запросы меню
+                queryClient.invalidateQueries({
+                    queryKey: [
+                        'menu'
+                    ]
+                });
+            }
+        }["useRestoreMenuItem.useMutation"]
+    });
+};
+_s31(useRestoreMenuItem, "YK0wzM21ECnncaq5SECwU+/SVdQ=", false, function() {
+    return [
+        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$QueryClientProvider$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useQueryClient"],
+        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useMutation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMutation"]
+    ];
+});
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
     __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
 }
@@ -2777,11 +2982,28 @@ const Header = ()=>{
                 }
             ];
         }
+        // Для менеджера - специальные пункты навигации
+        if ((user === null || user === void 0 ? void 0 : user.role) === 'manager') {
+            return [
+                {
+                    label: 'Управление меню',
+                    path: '/manager/menu'
+                },
+                {
+                    label: 'Создание бронирований',
+                    path: '/manager/reservations'
+                },
+                {
+                    label: 'Отчетность',
+                    path: '/manager/reports'
+                }
+            ];
+        }
         // Для авторизованных пользователей - добавляем пункты в зависимости от роли
         if ((user === null || user === void 0 ? void 0 : user.role) === 'user') {
             return baseItems; // Профиль будет в выпадающем меню
         }
-        return baseItems; // Для admin/manager тоже базовые пункты
+        return baseItems; // Для admin тоже базовые пункты
     };
     const handleNavigation = (path)=>{
         router.push(path);
@@ -2833,7 +3055,7 @@ const Header = ()=>{
                                 }
                             }, void 0, false, {
                                 fileName: "[project]/src/components/layout/Header.tsx",
-                                lineNumber: 92,
+                                lineNumber: 101,
                                 columnNumber: 13
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Typography$2f$Typography$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__["Typography"], {
@@ -2847,13 +3069,13 @@ const Header = ()=>{
                                 children: "Грузинская Кухня"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/layout/Header.tsx",
-                                lineNumber: 93,
+                                lineNumber: 102,
                                 columnNumber: 13
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/layout/Header.tsx",
-                        lineNumber: 91,
+                        lineNumber: 100,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
@@ -2879,7 +3101,7 @@ const Header = ()=>{
                                     children: item.label
                                 }, item.path, false, {
                                     fileName: "[project]/src/components/layout/Header.tsx",
-                                    lineNumber: 109,
+                                    lineNumber: 118,
                                     columnNumber: 15
                                 }, ("TURBOPACK compile-time value", void 0))),
                             isAuthenticated && (user === null || user === void 0 ? void 0 : user.role) === 'user' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$IconButton$2f$IconButton$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__IconButton$3e$__["IconButton"], {
@@ -2895,22 +3117,22 @@ const Header = ()=>{
                                     color: "error",
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$ShoppingCart$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                                         fileName: "[project]/src/components/layout/Header.tsx",
-                                        lineNumber: 140,
+                                        lineNumber: 149,
                                         columnNumber: 19
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/layout/Header.tsx",
-                                    lineNumber: 139,
+                                    lineNumber: 148,
                                     columnNumber: 17
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/src/components/layout/Header.tsx",
-                                lineNumber: 130,
+                                lineNumber: 139,
                                 columnNumber: 15
                             }, ("TURBOPACK compile-time value", void 0)),
                             isAuthenticated && (user === null || user === void 0 ? void 0 : user.role) === 'user' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$reservations$2f$ActiveReservationBadge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                                 fileName: "[project]/src/components/layout/Header.tsx",
-                                lineNumber: 147,
+                                lineNumber: 156,
                                 columnNumber: 15
                             }, ("TURBOPACK compile-time value", void 0)),
                             isAuthenticated && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
@@ -2930,12 +3152,12 @@ const Header = ()=>{
                                                 }
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/layout/Header.tsx",
-                                                lineNumber: 157,
+                                                lineNumber: 166,
                                                 columnNumber: 21
                                             }, void 0)
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/layout/Header.tsx",
-                                            lineNumber: 156,
+                                            lineNumber: 165,
                                             columnNumber: 30
                                         }, void 0),
                                         sx: {
@@ -2949,7 +3171,7 @@ const Header = ()=>{
                                         children: user === null || user === void 0 ? void 0 : user.first_name
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/layout/Header.tsx",
-                                        lineNumber: 153,
+                                        lineNumber: 162,
                                         columnNumber: 17
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Menu$2f$Menu$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Menu$3e$__["Menu"], {
@@ -2974,14 +3196,36 @@ const Header = ()=>{
                                                         }
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/layout/Header.tsx",
-                                                        lineNumber: 186,
+                                                        lineNumber: 195,
                                                         columnNumber: 23
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     "Профиль"
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/layout/Header.tsx",
-                                                lineNumber: 185,
+                                                lineNumber: 194,
+                                                columnNumber: 21
+                                            }, ("TURBOPACK compile-time value", void 0)),
+                                            (user === null || user === void 0 ? void 0 : user.role) === 'manager' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$MenuItem$2f$MenuItem$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__MenuItem$3e$__["MenuItem"], {
+                                                onClick: ()=>{
+                                                    handleProfileMenuClose();
+                                                    router.push('/manager');
+                                                },
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$Person$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                                                        sx: {
+                                                            mr: 1
+                                                        }
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/components/layout/Header.tsx",
+                                                        lineNumber: 202,
+                                                        columnNumber: 23
+                                                    }, ("TURBOPACK compile-time value", void 0)),
+                                                    "Панель менеджера"
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/src/components/layout/Header.tsx",
+                                                lineNumber: 201,
                                                 columnNumber: 21
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$MenuItem$2f$MenuItem$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__MenuItem$3e$__["MenuItem"], {
@@ -2993,20 +3237,20 @@ const Header = ()=>{
                                                         }
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/layout/Header.tsx",
-                                                        lineNumber: 192,
+                                                        lineNumber: 208,
                                                         columnNumber: 21
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     "Выход"
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/layout/Header.tsx",
-                                                lineNumber: 191,
+                                                lineNumber: 207,
                                                 columnNumber: 19
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/layout/Header.tsx",
-                                        lineNumber: 171,
+                                        lineNumber: 180,
                                         columnNumber: 17
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
@@ -3014,23 +3258,23 @@ const Header = ()=>{
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/layout/Header.tsx",
-                        lineNumber: 107,
+                        lineNumber: 116,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/layout/Header.tsx",
-                lineNumber: 89,
+                lineNumber: 98,
                 columnNumber: 9
             }, ("TURBOPACK compile-time value", void 0))
         }, void 0, false, {
             fileName: "[project]/src/components/layout/Header.tsx",
-            lineNumber: 88,
+            lineNumber: 97,
             columnNumber: 7
         }, ("TURBOPACK compile-time value", void 0))
     }, void 0, false, {
         fileName: "[project]/src/components/layout/Header.tsx",
-        lineNumber: 87,
+        lineNumber: 96,
         columnNumber: 5
     }, ("TURBOPACK compile-time value", void 0));
 };

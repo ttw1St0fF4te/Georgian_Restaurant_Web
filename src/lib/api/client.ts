@@ -31,6 +31,14 @@ apiClient.interceptors.request.use(
       const token = localStorage.getItem('georgian_restaurant_token');
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
+        console.log('🔑 Request with token:', {
+          url: config.url,
+          method: config.method,
+          hasToken: !!token,
+          tokenPreview: token ? token.substring(0, 20) + '...' : null
+        });
+      } else {
+        console.log('⚠️ No token found for request:', config.url);
       }
     }
     return config;
@@ -46,6 +54,14 @@ apiClient.interceptors.response.use(
     return response;
   },
   (error) => {
+    console.log('🚨 API Error:', {
+      url: error.config?.url,
+      method: error.config?.method,
+      status: error.response?.status,
+      data: error.response?.data,
+      message: error.message
+    });
+
     const apiError: ApiError = {
       message: error.response?.data?.message || error.message || 'Неизвестная ошибка',
       status: error.response?.status || 500,
@@ -54,6 +70,7 @@ apiClient.interceptors.response.use(
 
     // Если 401 - перенаправляем на логин
     if (error.response?.status === 401) {
+      console.log('🚨 401 Unauthorized - clearing auth data and redirecting to login');
       if (typeof window !== 'undefined') {
         localStorage.removeItem('georgian_restaurant_token');
         localStorage.removeItem('georgian_restaurant_user');

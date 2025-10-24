@@ -1,7 +1,9 @@
 {
-  "/cart/page": "app/cart/page.js",
-  "/page": "app/page.js",
-  "/profile/orders/page": "app/profile/orders/page.js",
-  "/profile/page": "app/profile/page.js",
-  "/profile/reservations/page": "app/profile/reservations/page.js"
+  "/auth/login/page": "app/auth/login/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/manager/menu/page": "app/manager/menu/page.js",
+  "/manager/page": "app/manager/page.js",
+  "/manager/reports/page": "app/manager/reports/page.js",
+  "/manager/reservations/page": "app/manager/reservations/page.js",
+  "/page": "app/page.js"
 }

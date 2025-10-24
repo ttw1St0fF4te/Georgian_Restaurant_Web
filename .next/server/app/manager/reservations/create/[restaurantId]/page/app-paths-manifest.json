@@ -1,0 +1,3 @@
+{
+  "/manager/reservations/create/[restaurantId]/page": "app/manager/reservations/create/[restaurantId]/page.js"
+}

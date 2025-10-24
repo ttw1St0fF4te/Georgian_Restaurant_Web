@@ -184,9 +184,6 @@ const MenuManagementPage = ()=>{
         if (!validateForm()) return;
         try {
             if (editDialogOpen && selectedItem) {
-                console.log('Updating menu item:', selectedItem.item_id);
-                console.log('FormData:', formData);
-                console.log('FormData as UpdateMenuItemDto:', formData);
                 // Преобразуем данные в правильные типы
                 const updateData = {
                     ...formData,
@@ -195,24 +192,21 @@ const MenuManagementPage = ()=>{
                     calories: typeof formData.calories === 'string' ? parseInt(formData.calories) : formData.calories,
                     category_id: typeof formData.category_id === 'string' ? parseInt(formData.category_id) : formData.category_id
                 };
-                console.log('Converted updateData:', updateData);
                 await updateMutation.mutateAsync({
                     id: selectedItem.item_id,
                     data: updateData
                 });
                 setEditDialogOpen(false);
             } else {
-                console.log('Creating menu item:', formData);
                 await createMutation.mutateAsync(formData);
                 setCreateDialogOpen(false);
             }
             setSelectedItem(null);
         } catch (error) {
-            var _error_response, _error_response_data, _error_response1;
+            var _error_response_data, _error_response;
             console.error('Error saving menu item:', error);
-            console.error('Error details:', (_error_response = error.response) === null || _error_response === void 0 ? void 0 : _error_response.data);
             setErrors([
-                ((_error_response1 = error.response) === null || _error_response1 === void 0 ? void 0 : (_error_response_data = _error_response1.data) === null || _error_response_data === void 0 ? void 0 : _error_response_data.message) || 'Ошибка при сохранении блюда'
+                ((_error_response = error.response) === null || _error_response === void 0 ? void 0 : (_error_response_data = _error_response.data) === null || _error_response_data === void 0 ? void 0 : _error_response_data.message) || 'Ошибка при сохранении блюда'
             ]);
         }
     };
@@ -254,17 +248,17 @@ const MenuManagementPage = ()=>{
                 minHeight: "50vh",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$CircularProgress$2f$CircularProgress$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CircularProgress$3e$__["CircularProgress"], {}, void 0, false, {
                     fileName: "[project]/src/app/manager/menu/page.tsx",
-                    lineNumber: 262,
+                    lineNumber: 254,
                     columnNumber: 11
                 }, ("TURBOPACK compile-time value", void 0))
             }, void 0, false, {
                 fileName: "[project]/src/app/manager/menu/page.tsx",
-                lineNumber: 261,
+                lineNumber: 253,
                 columnNumber: 9
             }, ("TURBOPACK compile-time value", void 0))
         }, void 0, false, {
             fileName: "[project]/src/app/manager/menu/page.tsx",
-            lineNumber: 260,
+            lineNumber: 252,
             columnNumber: 7
         }, ("TURBOPACK compile-time value", void 0));
     }
@@ -280,12 +274,12 @@ const MenuManagementPage = ()=>{
                 children: "Ошибка при загрузке меню. Попробуйте перезагрузить страницу."
             }, void 0, false, {
                 fileName: "[project]/src/app/manager/menu/page.tsx",
-                lineNumber: 271,
+                lineNumber: 263,
                 columnNumber: 9
             }, ("TURBOPACK compile-time value", void 0))
         }, void 0, false, {
             fileName: "[project]/src/app/manager/menu/page.tsx",
-            lineNumber: 270,
+            lineNumber: 262,
             columnNumber: 7
         }, ("TURBOPACK compile-time value", void 0));
     }
@@ -318,12 +312,12 @@ const MenuManagementPage = ()=>{
                                 color: "primary",
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$ArrowBack$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                                     fileName: "[project]/src/app/manager/menu/page.tsx",
-                                    lineNumber: 288,
+                                    lineNumber: 280,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/src/app/manager/menu/page.tsx",
-                                lineNumber: 283,
+                                lineNumber: 275,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Typography$2f$Typography$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__["Typography"], {
@@ -338,27 +332,27 @@ const MenuManagementPage = ()=>{
                                         }
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/manager/menu/page.tsx",
-                                        lineNumber: 291,
+                                        lineNumber: 283,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     "Управление меню"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/manager/menu/page.tsx",
-                                lineNumber: 290,
+                                lineNumber: 282,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/manager/menu/page.tsx",
-                        lineNumber: 282,
+                        lineNumber: 274,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Button$2f$Button$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__["Button"], {
                         variant: "contained",
                         startIcon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$Add$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                             fileName: "[project]/src/app/manager/menu/page.tsx",
-                            lineNumber: 298,
+                            lineNumber: 290,
                             columnNumber: 22
                         }, void 0),
                         onClick: handleCreateOpen,
@@ -366,13 +360,13 @@ const MenuManagementPage = ()=>{
                         children: "Добавить блюдо"
                     }, void 0, false, {
                         fileName: "[project]/src/app/manager/menu/page.tsx",
-                        lineNumber: 296,
+                        lineNumber: 288,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/manager/menu/page.tsx",
-                lineNumber: 281,
+                lineNumber: 273,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Card$2f$Card$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Card$3e$__["Card"], {
@@ -388,42 +382,42 @@ const MenuManagementPage = ()=>{
                                                     children: "Название"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                    lineNumber: 313,
+                                                    lineNumber: 305,
                                                     columnNumber: 19
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$TableCell$2f$TableCell$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TableCell$3e$__["TableCell"], {
                                                     children: "Категория"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                    lineNumber: 314,
+                                                    lineNumber: 306,
                                                     columnNumber: 19
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$TableCell$2f$TableCell$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TableCell$3e$__["TableCell"], {
                                                     children: "Цена"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                    lineNumber: 315,
+                                                    lineNumber: 307,
                                                     columnNumber: 19
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$TableCell$2f$TableCell$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TableCell$3e$__["TableCell"], {
                                                     children: "Время приготовления"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                    lineNumber: 316,
+                                                    lineNumber: 308,
                                                     columnNumber: 19
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$TableCell$2f$TableCell$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TableCell$3e$__["TableCell"], {
                                                     children: "Характеристики"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                    lineNumber: 317,
+                                                    lineNumber: 309,
                                                     columnNumber: 19
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$TableCell$2f$TableCell$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TableCell$3e$__["TableCell"], {
                                                     children: "Статус"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                    lineNumber: 318,
+                                                    lineNumber: 310,
                                                     columnNumber: 19
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$TableCell$2f$TableCell$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TableCell$3e$__["TableCell"], {
@@ -431,18 +425,18 @@ const MenuManagementPage = ()=>{
                                                     children: "Действия"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                    lineNumber: 319,
+                                                    lineNumber: 311,
                                                     columnNumber: 19
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/manager/menu/page.tsx",
-                                            lineNumber: 312,
+                                            lineNumber: 304,
                                             columnNumber: 17
                                         }, ("TURBOPACK compile-time value", void 0))
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/manager/menu/page.tsx",
-                                        lineNumber: 311,
+                                        lineNumber: 303,
                                         columnNumber: 15
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$TableBody$2f$TableBody$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TableBody$3e$__["TableBody"], {
@@ -464,7 +458,7 @@ const MenuManagementPage = ()=>{
                                                                     children: item.item_name
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                                    lineNumber: 327,
+                                                                    lineNumber: 319,
                                                                     columnNumber: 25
                                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                                 item.item_description && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Typography$2f$Typography$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__["Typography"], {
@@ -473,25 +467,25 @@ const MenuManagementPage = ()=>{
                                                                     children: item.item_description.length > 60 ? "".concat(item.item_description.substring(0, 60), "...") : item.item_description
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                                    lineNumber: 331,
+                                                                    lineNumber: 323,
                                                                     columnNumber: 27
                                                                 }, ("TURBOPACK compile-time value", void 0))
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                            lineNumber: 326,
+                                                            lineNumber: 318,
                                                             columnNumber: 23
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                        lineNumber: 325,
+                                                        lineNumber: 317,
                                                         columnNumber: 21
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$TableCell$2f$TableCell$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TableCell$3e$__["TableCell"], {
                                                         children: (_item_category = item.category) === null || _item_category === void 0 ? void 0 : _item_category.category_name
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                        lineNumber: 339,
+                                                        lineNumber: 331,
                                                         columnNumber: 21
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$TableCell$2f$TableCell$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TableCell$3e$__["TableCell"], {
@@ -501,7 +495,7 @@ const MenuManagementPage = ()=>{
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                        lineNumber: 340,
+                                                        lineNumber: 332,
                                                         columnNumber: 21
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$TableCell$2f$TableCell$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TableCell$3e$__["TableCell"], {
@@ -517,7 +511,7 @@ const MenuManagementPage = ()=>{
                                                                     color: "action"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                                    lineNumber: 343,
+                                                                    lineNumber: 335,
                                                                     columnNumber: 25
                                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                                 Number(item.cooking_time_minutes || 0),
@@ -525,12 +519,12 @@ const MenuManagementPage = ()=>{
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                            lineNumber: 342,
+                                                            lineNumber: 334,
                                                             columnNumber: 23
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                        lineNumber: 341,
+                                                        lineNumber: 333,
                                                         columnNumber: 21
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$TableCell$2f$TableCell$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TableCell$3e$__["TableCell"], {
@@ -547,12 +541,12 @@ const MenuManagementPage = ()=>{
                                                                         color: "success"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                                        lineNumber: 351,
+                                                                        lineNumber: 343,
                                                                         columnNumber: 29
                                                                     }, ("TURBOPACK compile-time value", void 0))
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                                    lineNumber: 350,
+                                                                    lineNumber: 342,
                                                                     columnNumber: 27
                                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                                 item.is_spicy && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Tooltip$2f$Tooltip$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Tooltip$3e$__["Tooltip"], {
@@ -562,12 +556,12 @@ const MenuManagementPage = ()=>{
                                                                         color: "warning"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                                        lineNumber: 356,
+                                                                        lineNumber: 348,
                                                                         columnNumber: 29
                                                                     }, ("TURBOPACK compile-time value", void 0))
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                                    lineNumber: 355,
+                                                                    lineNumber: 347,
                                                                     columnNumber: 27
                                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                                 item.calories && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Typography$2f$Typography$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__["Typography"], {
@@ -579,18 +573,18 @@ const MenuManagementPage = ()=>{
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                                    lineNumber: 360,
+                                                                    lineNumber: 352,
                                                                     columnNumber: 27
                                                                 }, ("TURBOPACK compile-time value", void 0))
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                            lineNumber: 348,
+                                                            lineNumber: 340,
                                                             columnNumber: 23
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                        lineNumber: 347,
+                                                        lineNumber: 339,
                                                         columnNumber: 21
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$TableCell$2f$TableCell$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TableCell$3e$__["TableCell"], {
@@ -600,12 +594,12 @@ const MenuManagementPage = ()=>{
                                                             size: "small"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                            lineNumber: 367,
+                                                            lineNumber: 359,
                                                             columnNumber: 23
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                        lineNumber: 366,
+                                                        lineNumber: 358,
                                                         columnNumber: 21
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$TableCell$2f$TableCell$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TableCell$3e$__["TableCell"], {
@@ -625,17 +619,17 @@ const MenuManagementPage = ()=>{
                                                                             color: "primary",
                                                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$Edit$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                                                                                 fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                                                lineNumber: 383,
+                                                                                lineNumber: 375,
                                                                                 columnNumber: 33
                                                                             }, ("TURBOPACK compile-time value", void 0))
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                                            lineNumber: 378,
+                                                                            lineNumber: 370,
                                                                             columnNumber: 31
                                                                         }, ("TURBOPACK compile-time value", void 0))
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                                        lineNumber: 377,
+                                                                        lineNumber: 369,
                                                                         columnNumber: 29
                                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Tooltip$2f$Tooltip$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Tooltip$3e$__["Tooltip"], {
@@ -646,17 +640,17 @@ const MenuManagementPage = ()=>{
                                                                             color: "error",
                                                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$Delete$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                                                                                 fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                                                lineNumber: 392,
+                                                                                lineNumber: 384,
                                                                                 columnNumber: 33
                                                                             }, ("TURBOPACK compile-time value", void 0))
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                                            lineNumber: 387,
+                                                                            lineNumber: 379,
                                                                             columnNumber: 31
                                                                         }, ("TURBOPACK compile-time value", void 0))
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                                        lineNumber: 386,
+                                                                        lineNumber: 378,
                                                                         columnNumber: 29
                                                                     }, ("TURBOPACK compile-time value", void 0))
                                                                 ]
@@ -668,50 +662,50 @@ const MenuManagementPage = ()=>{
                                                                     color: "success",
                                                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$Restore$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                                                                         fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                                        lineNumber: 403,
+                                                                        lineNumber: 395,
                                                                         columnNumber: 31
                                                                     }, ("TURBOPACK compile-time value", void 0))
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                                    lineNumber: 398,
+                                                                    lineNumber: 390,
                                                                     columnNumber: 29
                                                                 }, ("TURBOPACK compile-time value", void 0))
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                                lineNumber: 397,
+                                                                lineNumber: 389,
                                                                 columnNumber: 27
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                            lineNumber: 374,
+                                                            lineNumber: 366,
                                                             columnNumber: 23
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                        lineNumber: 373,
+                                                        lineNumber: 365,
                                                         columnNumber: 21
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, item.item_id, true, {
                                                 fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                lineNumber: 324,
+                                                lineNumber: 316,
                                                 columnNumber: 19
                                             }, ("TURBOPACK compile-time value", void 0));
                                         })
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/manager/menu/page.tsx",
-                                        lineNumber: 322,
+                                        lineNumber: 314,
                                         columnNumber: 15
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/manager/menu/page.tsx",
-                                lineNumber: 310,
+                                lineNumber: 302,
                                 columnNumber: 13
                             }, ("TURBOPACK compile-time value", void 0))
                         }, void 0, false, {
                             fileName: "[project]/src/app/manager/menu/page.tsx",
-                            lineNumber: 309,
+                            lineNumber: 301,
                             columnNumber: 11
                         }, ("TURBOPACK compile-time value", void 0)),
                         (!(menuData === null || menuData === void 0 ? void 0 : menuData.items) || menuData.items.length === 0) && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
@@ -727,7 +721,7 @@ const MenuManagementPage = ()=>{
                                     children: "Блюда не найдены"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/manager/menu/page.tsx",
-                                    lineNumber: 417,
+                                    lineNumber: 409,
                                     columnNumber: 15
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Typography$2f$Typography$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__["Typography"], {
@@ -736,13 +730,13 @@ const MenuManagementPage = ()=>{
                                     children: "Начните с добавления первого блюда в меню"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/manager/menu/page.tsx",
-                                    lineNumber: 420,
+                                    lineNumber: 412,
                                     columnNumber: 15
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/manager/menu/page.tsx",
-                            lineNumber: 416,
+                            lineNumber: 408,
                             columnNumber: 13
                         }, ("TURBOPACK compile-time value", void 0)),
                         menuData && menuData.pages > 1 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
@@ -756,23 +750,23 @@ const MenuManagementPage = ()=>{
                                 color: "primary"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/manager/menu/page.tsx",
-                                lineNumber: 429,
+                                lineNumber: 421,
                                 columnNumber: 15
                             }, ("TURBOPACK compile-time value", void 0))
                         }, void 0, false, {
                             fileName: "[project]/src/app/manager/menu/page.tsx",
-                            lineNumber: 428,
+                            lineNumber: 420,
                             columnNumber: 13
                         }, ("TURBOPACK compile-time value", void 0))
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/manager/menu/page.tsx",
-                    lineNumber: 308,
+                    lineNumber: 300,
                     columnNumber: 9
                 }, ("TURBOPACK compile-time value", void 0))
             }, void 0, false, {
                 fileName: "[project]/src/app/manager/menu/page.tsx",
-                lineNumber: 307,
+                lineNumber: 299,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Dialog$2f$Dialog$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Dialog$3e$__["Dialog"], {
@@ -785,7 +779,7 @@ const MenuManagementPage = ()=>{
                         children: editDialogOpen ? 'Редактировать блюдо' : 'Добавить блюдо'
                     }, void 0, false, {
                         fileName: "[project]/src/app/manager/menu/page.tsx",
-                        lineNumber: 447,
+                        lineNumber: 439,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$DialogContent$2f$DialogContent$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__DialogContent$3e$__["DialogContent"], {
@@ -800,12 +794,12 @@ const MenuManagementPage = ()=>{
                                         children: error
                                     }, index, false, {
                                         fileName: "[project]/src/app/manager/menu/page.tsx",
-                                        lineNumber: 454,
+                                        lineNumber: 446,
                                         columnNumber: 17
                                     }, ("TURBOPACK compile-time value", void 0)))
                             }, void 0, false, {
                                 fileName: "[project]/src/app/manager/menu/page.tsx",
-                                lineNumber: 452,
+                                lineNumber: 444,
                                 columnNumber: 13
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
@@ -826,7 +820,7 @@ const MenuManagementPage = ()=>{
                                         fullWidth: true
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/manager/menu/page.tsx",
-                                        lineNumber: 462,
+                                        lineNumber: 454,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$TextField$2f$TextField$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TextField$3e$__["TextField"], {
@@ -841,7 +835,7 @@ const MenuManagementPage = ()=>{
                                         rows: 3
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/manager/menu/page.tsx",
-                                        lineNumber: 469,
+                                        lineNumber: 461,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$FormControl$2f$FormControl$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__FormControl$3e$__["FormControl"], {
@@ -851,7 +845,7 @@ const MenuManagementPage = ()=>{
                                                 children: "Категория *"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                lineNumber: 479,
+                                                lineNumber: 471,
                                                 columnNumber: 15
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Select$2f$Select$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Select$3e$__["Select"], {
@@ -867,7 +861,7 @@ const MenuManagementPage = ()=>{
                                                         children: "Выберите категорию"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                        lineNumber: 485,
+                                                        lineNumber: 477,
                                                         columnNumber: 17
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     categories === null || categories === void 0 ? void 0 : categories.map((category)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$MenuItem$2f$MenuItem$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__MenuItem$3e$__["MenuItem"], {
@@ -875,19 +869,19 @@ const MenuManagementPage = ()=>{
                                                             children: category.category_name
                                                         }, category.category_id, false, {
                                                             fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                            lineNumber: 487,
+                                                            lineNumber: 479,
                                                             columnNumber: 19
                                                         }, ("TURBOPACK compile-time value", void 0)))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                lineNumber: 480,
+                                                lineNumber: 472,
                                                 columnNumber: 15
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/manager/menu/page.tsx",
-                                        lineNumber: 478,
+                                        lineNumber: 470,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
@@ -911,7 +905,7 @@ const MenuManagementPage = ()=>{
                                                 }
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                lineNumber: 495,
+                                                lineNumber: 487,
                                                 columnNumber: 15
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$TextField$2f$TextField$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TextField$3e$__["TextField"], {
@@ -928,13 +922,13 @@ const MenuManagementPage = ()=>{
                                                 }
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                lineNumber: 504,
+                                                lineNumber: 496,
                                                 columnNumber: 15
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/manager/menu/page.tsx",
-                                        lineNumber: 494,
+                                        lineNumber: 486,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
@@ -957,7 +951,7 @@ const MenuManagementPage = ()=>{
                                                 }
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                lineNumber: 515,
+                                                lineNumber: 507,
                                                 columnNumber: 15
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$TextField$2f$TextField$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TextField$3e$__["TextField"], {
@@ -970,13 +964,13 @@ const MenuManagementPage = ()=>{
                                                 fullWidth: true
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                lineNumber: 524,
+                                                lineNumber: 516,
                                                 columnNumber: 15
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/manager/menu/page.tsx",
-                                        lineNumber: 514,
+                                        lineNumber: 506,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
@@ -994,13 +988,13 @@ const MenuManagementPage = ()=>{
                                                         })
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                    lineNumber: 535,
+                                                    lineNumber: 527,
                                                     columnNumber: 19
                                                 }, void 0),
                                                 label: "Вегетарианское"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                lineNumber: 533,
+                                                lineNumber: 525,
                                                 columnNumber: 15
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$FormControlLabel$2f$FormControlLabel$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__FormControlLabel$3e$__["FormControlLabel"], {
@@ -1012,31 +1006,31 @@ const MenuManagementPage = ()=>{
                                                         })
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                    lineNumber: 545,
+                                                    lineNumber: 537,
                                                     columnNumber: 19
                                                 }, void 0),
                                                 label: "Острое"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/manager/menu/page.tsx",
-                                                lineNumber: 543,
+                                                lineNumber: 535,
                                                 columnNumber: 15
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/manager/menu/page.tsx",
-                                        lineNumber: 532,
+                                        lineNumber: 524,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/manager/menu/page.tsx",
-                                lineNumber: 461,
+                                lineNumber: 453,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/manager/menu/page.tsx",
-                        lineNumber: 450,
+                        lineNumber: 442,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$DialogActions$2f$DialogActions$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__DialogActions$3e$__["DialogActions"], {
@@ -1046,7 +1040,7 @@ const MenuManagementPage = ()=>{
                                 children: "Отмена"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/manager/menu/page.tsx",
-                                lineNumber: 556,
+                                lineNumber: 548,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Button$2f$Button$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__["Button"], {
@@ -1057,24 +1051,24 @@ const MenuManagementPage = ()=>{
                                     size: 20
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/manager/menu/page.tsx",
-                                    lineNumber: 563,
+                                    lineNumber: 555,
                                     columnNumber: 15
                                 }, ("TURBOPACK compile-time value", void 0)) : editDialogOpen ? 'Сохранить' : 'Создать'
                             }, void 0, false, {
                                 fileName: "[project]/src/app/manager/menu/page.tsx",
-                                lineNumber: 557,
+                                lineNumber: 549,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/manager/menu/page.tsx",
-                        lineNumber: 555,
+                        lineNumber: 547,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/manager/menu/page.tsx",
-                lineNumber: 441,
+                lineNumber: 433,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Dialog$2f$Dialog$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Dialog$3e$__["Dialog"], {
@@ -1085,7 +1079,7 @@ const MenuManagementPage = ()=>{
                         children: "Подтверждение удаления"
                     }, void 0, false, {
                         fileName: "[project]/src/app/manager/menu/page.tsx",
-                        lineNumber: 573,
+                        lineNumber: 565,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$DialogContent$2f$DialogContent$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__DialogContent$3e$__["DialogContent"], {
@@ -1098,7 +1092,7 @@ const MenuManagementPage = ()=>{
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/manager/menu/page.tsx",
-                                lineNumber: 575,
+                                lineNumber: 567,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Typography$2f$Typography$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__["Typography"], {
@@ -1110,13 +1104,13 @@ const MenuManagementPage = ()=>{
                                 children: "Блюдо будет скрыто для клиентов, но останется в существующих заказах."
                             }, void 0, false, {
                                 fileName: "[project]/src/app/manager/menu/page.tsx",
-                                lineNumber: 578,
+                                lineNumber: 570,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/manager/menu/page.tsx",
-                        lineNumber: 574,
+                        lineNumber: 566,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$DialogActions$2f$DialogActions$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__DialogActions$3e$__["DialogActions"], {
@@ -1126,7 +1120,7 @@ const MenuManagementPage = ()=>{
                                 children: "Отмена"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/manager/menu/page.tsx",
-                                lineNumber: 583,
+                                lineNumber: 575,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Button$2f$Button$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__["Button"], {
@@ -1138,30 +1132,30 @@ const MenuManagementPage = ()=>{
                                     size: 20
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/manager/menu/page.tsx",
-                                    lineNumber: 590,
+                                    lineNumber: 582,
                                     columnNumber: 45
                                 }, ("TURBOPACK compile-time value", void 0)) : 'Удалить'
                             }, void 0, false, {
                                 fileName: "[project]/src/app/manager/menu/page.tsx",
-                                lineNumber: 584,
+                                lineNumber: 576,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/manager/menu/page.tsx",
-                        lineNumber: 582,
+                        lineNumber: 574,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/manager/menu/page.tsx",
-                lineNumber: 572,
+                lineNumber: 564,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0))
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/manager/menu/page.tsx",
-        lineNumber: 279,
+        lineNumber: 271,
         columnNumber: 5
     }, ("TURBOPACK compile-time value", void 0));
 };

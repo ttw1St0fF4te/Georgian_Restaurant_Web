@@ -103,9 +103,7 @@ export class MenuService {
 
   // Обновить блюдо
   static async updateMenuItem(id: number, data: UpdateMenuItemDto): Promise<MenuItemResponseDto> {
-    console.log('MenuService.updateMenuItem called with:', { id, data });
     const response = await apiClient.patch(`/menu/${id}`, data);
-    console.log('MenuService.updateMenuItem response:', response.data);
     return response.data;
   }
 

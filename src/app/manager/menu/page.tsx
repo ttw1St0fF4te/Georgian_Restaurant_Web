@@ -188,10 +188,6 @@ const MenuManagementPage: React.FC = () => {
 
     try {
       if (editDialogOpen && selectedItem) {
-        console.log('Updating menu item:', selectedItem.item_id);
-        console.log('FormData:', formData);
-        console.log('FormData as UpdateMenuItemDto:', formData as UpdateMenuItemDto);
-        
         // Преобразуем данные в правильные типы
         const updateData: UpdateMenuItemDto = {
           ...formData,
@@ -207,22 +203,18 @@ const MenuManagementPage: React.FC = () => {
             : formData.category_id,
         };
         
-        console.log('Converted updateData:', updateData);
-        
         await updateMutation.mutateAsync({
           id: selectedItem.item_id,
           data: updateData,
         });
         setEditDialogOpen(false);
       } else {
-        console.log('Creating menu item:', formData);
         await createMutation.mutateAsync(formData);
         setCreateDialogOpen(false);
       }
       setSelectedItem(null);
     } catch (error: any) {
       console.error('Error saving menu item:', error);
-      console.error('Error details:', error.response?.data);
       setErrors([error.response?.data?.message || 'Ошибка при сохранении блюда']);
     }
   };

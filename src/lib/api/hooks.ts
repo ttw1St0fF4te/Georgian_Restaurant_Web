@@ -3,7 +3,19 @@ import { MenuService, RestaurantService } from './services';
 import { reviewsApi } from './reviews';
 import { reservationsApi } from './reservations';
 import { ordersApi } from './orders';
-import { MenuFilterParams, CreateMenuItemDto, UpdateMenuItemDto } from './services/menu';
+import {
+  MenuItemResponseDto,
+  CreateMenuItemDto,
+  UpdateMenuItemDto,
+  MenuFilterParams,
+} from '@/lib/api/services/menu';
+import {
+  ReservationsService,
+  ReservationResponseDto,
+  CreateReservationDto as ReservationCreateDto,
+  CreateReservationForUserDto,
+} from '@/lib/api/services/reservations';
+import { AuthService } from '@/lib/api/services/auth';
 import { RestaurantFilterParams } from './services/restaurant';
 import { ReviewFilterDto, CreateReviewDto, UpdateReviewDto } from './types';
 import { CreateReservationDto } from './reservations';
@@ -440,5 +452,63 @@ export const useRestoreMenuItem = () => {
         queryKey: ['menu'] 
       });
     },
+  });
+};
+
+// ===== RESERVATIONS HOOKS =====
+
+// Получить все бронирования (для менеджеров)
+export const useAllReservations = () => {
+  return useQuery({
+    queryKey: ['reservations', 'all'],
+    queryFn: ReservationsService.getAllReservations,
+    staleTime: 2 * 60 * 1000, // 2 минуты
+  });
+};
+
+// Подтвердить бронирование (для менеджера)
+export const useConfirmReservationForManager = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (reservationId: string) => ReservationsService.confirmReservationForManager(reservationId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['reservations'] });
+    },
+  });
+};
+
+// Отменить бронирование (для менеджера)
+export const useCancelReservationForManager = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (reservationId: string) => ReservationsService.cancelReservationForManager(reservationId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['reservations'] });
+    },
+  });
+};
+
+// Создать бронирование для пользователя (менеджером)
+export const useCreateReservationForManager = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (reservationData: CreateReservationForUserDto) => ReservationsService.createReservationForUser(reservationData),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['reservations'] });
+    },
+  });
+};
+
+// ===== AUTH HOOKS =====
+
+// Получить всех пользователей (для менеджеров)
+export const useAllUsers = () => {
+  return useQuery({
+    queryKey: ['users', 'all'],
+    queryFn: AuthService.getAllUsers,
+    staleTime: 5 * 60 * 1000, // 5 минут
   });
 };

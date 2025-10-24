@@ -1,9 +1,9 @@
 {
-  "/auth/login/page": "app/auth/login/page.js",
   "/favicon.ico/route": "app/favicon.ico/route.js",
   "/manager/menu/page": "app/manager/menu/page.js",
   "/manager/page": "app/manager/page.js",
-  "/manager/reports/page": "app/manager/reports/page.js",
+  "/manager/reservations/create/[restaurantId]/page": "app/manager/reservations/create/[restaurantId]/page.js",
+  "/manager/reservations/create/page": "app/manager/reservations/create/page.js",
   "/manager/reservations/page": "app/manager/reservations/page.js",
   "/page": "app/page.js"
 }

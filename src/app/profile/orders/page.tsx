@@ -123,7 +123,7 @@ const OrdersHistoryPage: React.FC = () => {
           </Typography>
           <Button
             variant="contained"
-            onClick={() => router.push('/menu')}
+            onClick={() => router.push('/')}
             size="large"
           >
             Перейти в меню

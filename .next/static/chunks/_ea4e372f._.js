@@ -128,7 +128,7 @@ function OrderSuccessPage() {
                                 lineNumber: 49,
                                 columnNumber: 24
                             }, void 0),
-                            onClick: ()=>router.push('/orders'),
+                            onClick: ()=>router.push('/profile/orders'),
                             children: "Мои заказы"
                         }, void 0, false, {
                             fileName: "[project]/src/app/checkout/success/page.tsx",

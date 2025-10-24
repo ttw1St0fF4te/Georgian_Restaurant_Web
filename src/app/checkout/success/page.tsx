@@ -47,7 +47,7 @@ export default function OrderSuccessPage() {
           <Button
             variant="contained"
             startIcon={<ReceiptIcon />}
-            onClick={() => router.push('/orders')}
+            onClick={() => router.push('/profile/orders')}
           >
             Мои заказы
           </Button>

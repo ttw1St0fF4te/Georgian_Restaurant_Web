@@ -15,6 +15,7 @@ import {
   CreateReservationDto as ReservationCreateDto,
   CreateReservationForUserDto,
 } from '@/lib/api/services/reservations';
+import { ReportsService } from '@/lib/api/services/reports';
 import { AuthService } from '@/lib/api/services/auth';
 import { RestaurantFilterParams } from './services/restaurant';
 import { ReviewFilterDto, CreateReviewDto, UpdateReviewDto } from './types';
@@ -510,5 +511,62 @@ export const useAllUsers = () => {
     queryKey: ['users', 'all'],
     queryFn: AuthService.getAllUsers,
     staleTime: 5 * 60 * 1000, // 5 минут
+  });
+};
+
+// ===== REPORTS HOOKS =====
+
+export const useSalesReport = (restaurantId: number | null, from: string, to: string) => {
+  return useQuery({
+    queryKey: ['reports', 'sales', restaurantId, from, to],
+    queryFn: () => ReportsService.getSalesByDay(restaurantId, from, to),
+    enabled: !!from && !!to,
+    staleTime: 2 * 60 * 1000,
+  });
+};
+
+export const useOccupancyReport = (restaurantId: number | null, from: string, to: string) => {
+  return useQuery({
+    queryKey: ['reports', 'occupancy', restaurantId, from, to],
+    queryFn: () => ReportsService.getOccupancyByTable(restaurantId, from, to),
+    enabled: !!from && !!to,
+    staleTime: 2 * 60 * 1000,
+  });
+};
+
+export const useUserVisitsReport = (from: string, to: string) => {
+  return useQuery({
+    queryKey: ['reports', 'user-visits', from, to],
+    queryFn: () => ReportsService.getUserVisits(from, to),
+    enabled: !!from && !!to,
+    staleTime: 2 * 60 * 1000,
+  });
+};
+
+export const useExportSalesCsv = () => {
+  return useMutation({
+    mutationFn: ({ restaurantId, from, to }: { restaurantId: number | null; from: string; to: string }) =>
+      ReportsService.exportSalesCsv(restaurantId, from, to),
+  });
+};
+
+export const useExportOccupancyCsv = () => {
+  return useMutation({
+    mutationFn: ({ restaurantId, from, to }: { restaurantId: number | null; from: string; to: string }) =>
+      ReportsService.exportOccupancyCsv(restaurantId, from, to),
+  });
+};
+
+export const useExportUserVisitsCsv = () => {
+  return useMutation({
+    mutationFn: ({ from, to }: { from: string; to: string }) =>
+      ReportsService.exportUserVisitsCsv(from, to),
+  });
+};
+
+export const useExportAllDataCsv = () => {
+  return useMutation({
+    mutationFn: ({ restaurantId, from, to }: { restaurantId: number | null; from: string; to: string }) =>
+      ReportsService.exportAllDataCsv(restaurantId, from, to),
   });
 };

@@ -437,11 +437,13 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$mat
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$Edit$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@mui/icons-material/esm/Edit.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$Person$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@mui/icons-material/esm/Person.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$Event$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@mui/icons-material/esm/Event.js [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$ShoppingBag$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@mui/icons-material/esm/ShoppingBag.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/navigation.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$auth$2d$context$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/auth-context.tsx [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$auth$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/auth.ts [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$countries$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/countries.ts [app-ssr] (ecmascript)");
 'use client';
+;
 ;
 ;
 ;
@@ -1367,24 +1369,43 @@ const ProfilePage = ()=>{
                             mb: 3,
                             flexWrap: 'wrap'
                         },
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Button$2f$Button$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__["Button"], {
-                            variant: "outlined",
-                            startIcon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$Event$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Button$2f$Button$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__["Button"], {
+                                variant: "outlined",
+                                startIcon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$Event$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
+                                    fileName: "[project]/src/app/profile/page.tsx",
+                                    lineNumber: 678,
+                                    columnNumber: 24
+                                }, void 0),
+                                onClick: ()=>router.push('/profile/reservations'),
+                                sx: {
+                                    flex: '1 1 200px'
+                                },
+                                children: "Мои бронирования"
+                            }, void 0, false, {
                                 fileName: "[project]/src/app/profile/page.tsx",
-                                lineNumber: 678,
-                                columnNumber: 24
-                            }, void 0),
-                            onClick: ()=>router.push('/profile/reservations'),
-                            sx: {
-                                flex: '1 1 200px'
-                            },
-                            children: "Мои бронирования"
-                        }, void 0, false, {
-                            fileName: "[project]/src/app/profile/page.tsx",
-                            lineNumber: 676,
-                            columnNumber: 11
-                        }, ("TURBOPACK compile-time value", void 0))
-                    }, void 0, false, {
+                                lineNumber: 676,
+                                columnNumber: 11
+                            }, ("TURBOPACK compile-time value", void 0)),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Button$2f$Button$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__["Button"], {
+                                variant: "outlined",
+                                startIcon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$ShoppingBag$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
+                                    fileName: "[project]/src/app/profile/page.tsx",
+                                    lineNumber: 686,
+                                    columnNumber: 24
+                                }, void 0),
+                                onClick: ()=>router.push('/profile/orders'),
+                                sx: {
+                                    flex: '1 1 200px'
+                                },
+                                children: "История заказов"
+                            }, void 0, false, {
+                                fileName: "[project]/src/app/profile/page.tsx",
+                                lineNumber: 684,
+                                columnNumber: 11
+                            }, ("TURBOPACK compile-time value", void 0))
+                        ]
+                    }, void 0, true, {
                         fileName: "[project]/src/app/profile/page.tsx",
                         lineNumber: 675,
                         columnNumber: 9
@@ -1396,7 +1417,7 @@ const ProfilePage = ()=>{
                         children: "Изменить пароль"
                     }, void 0, false, {
                         fileName: "[project]/src/app/profile/page.tsx",
-                        lineNumber: 687,
+                        lineNumber: 695,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
@@ -1415,7 +1436,7 @@ const ProfilePage = ()=>{
                         children: "Изменить пароль"
                     }, void 0, false, {
                         fileName: "[project]/src/app/profile/page.tsx",
-                        lineNumber: 703,
+                        lineNumber: 711,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$DialogContent$2f$DialogContent$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__DialogContent$3e$__["DialogContent"], {
@@ -1432,19 +1453,19 @@ const ProfilePage = ()=>{
                                             children: "Важно:"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/profile/page.tsx",
-                                            lineNumber: 708,
+                                            lineNumber: 716,
                                             columnNumber: 15
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         " После успешной смены пароля вы будете автоматически разлогинены из соображений безопасности. Вам потребуется войти в систему заново с новым паролем."
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/profile/page.tsx",
-                                    lineNumber: 707,
+                                    lineNumber: 715,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/src/app/profile/page.tsx",
-                                lineNumber: 706,
+                                lineNumber: 714,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0)),
                             passwordErrors.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Alert$2f$Alert$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Alert$3e$__["Alert"], {
@@ -1457,12 +1478,12 @@ const ProfilePage = ()=>{
                                         children: error
                                     }, index, false, {
                                         fileName: "[project]/src/app/profile/page.tsx",
-                                        lineNumber: 716,
+                                        lineNumber: 724,
                                         columnNumber: 17
                                     }, ("TURBOPACK compile-time value", void 0)))
                             }, void 0, false, {
                                 fileName: "[project]/src/app/profile/page.tsx",
-                                lineNumber: 714,
+                                lineNumber: 722,
                                 columnNumber: 13
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
@@ -1481,7 +1502,7 @@ const ProfilePage = ()=>{
                                         disabled: passwordLoading
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/profile/page.tsx",
-                                        lineNumber: 724,
+                                        lineNumber: 732,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$TextField$2f$TextField$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TextField$3e$__["TextField"], {
@@ -1497,7 +1518,7 @@ const ProfilePage = ()=>{
                                         placeholder: "Минимум 8 символов"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/profile/page.tsx",
-                                        lineNumber: 735,
+                                        lineNumber: 743,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$TextField$2f$TextField$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TextField$3e$__["TextField"], {
@@ -1513,19 +1534,19 @@ const ProfilePage = ()=>{
                                         placeholder: "Повторите новый пароль"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/profile/page.tsx",
-                                        lineNumber: 747,
+                                        lineNumber: 755,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/profile/page.tsx",
-                                lineNumber: 723,
+                                lineNumber: 731,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/profile/page.tsx",
-                        lineNumber: 704,
+                        lineNumber: 712,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$DialogActions$2f$DialogActions$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__DialogActions$3e$__["DialogActions"], {
@@ -1536,7 +1557,7 @@ const ProfilePage = ()=>{
                                 children: "Отмена"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/profile/page.tsx",
-                                lineNumber: 762,
+                                lineNumber: 770,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Button$2f$Button$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__["Button"], {
@@ -1548,25 +1569,25 @@ const ProfilePage = ()=>{
                                     color: "inherit"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/profile/page.tsx",
-                                    lineNumber: 772,
+                                    lineNumber: 780,
                                     columnNumber: 42
                                 }, void 0) : undefined,
                                 children: passwordLoading ? 'Изменение...' : 'Изменить пароль'
                             }, void 0, false, {
                                 fileName: "[project]/src/app/profile/page.tsx",
-                                lineNumber: 768,
+                                lineNumber: 776,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/profile/page.tsx",
-                        lineNumber: 761,
+                        lineNumber: 769,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/profile/page.tsx",
-                lineNumber: 697,
+                lineNumber: 705,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0))
         ]

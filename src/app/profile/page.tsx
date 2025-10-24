@@ -26,7 +26,7 @@ import {
   Select,
   MenuItem,
 } from '@mui/material';
-import { Edit as EditIcon, Person as PersonIcon, Event as EventIcon } from '@mui/icons-material';
+import { Edit as EditIcon, Person as PersonIcon, Event as EventIcon, ShoppingBag as ShoppingBagIcon } from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
 import { authService } from '@/lib/auth';
@@ -680,6 +680,14 @@ const ProfilePage: React.FC = () => {
             sx={{ flex: '1 1 200px' }}
           >
             Мои бронирования
+          </Button>
+          <Button
+            variant="outlined"
+            startIcon={<ShoppingBagIcon />}
+            onClick={() => router.push('/profile/orders')}
+            sx={{ flex: '1 1 200px' }}
+          >
+            История заказов
           </Button>
         </Box>
 

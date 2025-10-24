@@ -1,10 +1,7 @@
 {
   "/cart/page": "app/cart/page.js",
-  "/checkout/page": "app/checkout/page.js",
-  "/checkout/success/page": "app/checkout/success/page.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
   "/page": "app/page.js",
+  "/profile/orders/page": "app/profile/orders/page.js",
   "/profile/page": "app/profile/page.js",
-  "/profile/reservations/page": "app/profile/reservations/page.js",
-  "/restaurants/page": "app/restaurants/page.js"
+  "/profile/reservations/page": "app/profile/reservations/page.js"
 }

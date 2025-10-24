@@ -473,6 +473,10 @@
 @layer components;
 
 @layer utilities {
+  .visible {
+    visibility: visible;
+  }
+
   .relative {
     position: relative;
   }

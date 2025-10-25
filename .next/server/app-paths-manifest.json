@@ -1,15 +1,5 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
-  "/auth/login/page": "app/auth/login/page.js",
-  "/cart/page": "app/cart/page.js",
-  "/checkout/page": "app/checkout/page.js",
-  "/checkout/success/page": "app/checkout/success/page.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/manager/page": "app/manager/page.js",
-  "/manager/reports/page": "app/manager/reports/page.js",
-  "/manager/reservations/page": "app/manager/reservations/page.js",
-  "/page": "app/page.js",
-  "/profile/orders/page": "app/profile/orders/page.js",
-  "/profile/page": "app/profile/page.js",
-  "/profile/reservations/page": "app/profile/reservations/page.js"
+  "/admin/audit/page": "app/admin/audit/page.js",
+  "/admin/users/page": "app/admin/users/page.js",
+  "/page": "app/page.js"
 }

@@ -8,7 +8,9 @@ export interface UserResponseDto {
   last_name: string;
   phone?: string;
   role: string;
+  role_id: number;
   created_at: Date;
+  last_login?: Date;
 }
 
 export class AuthService {

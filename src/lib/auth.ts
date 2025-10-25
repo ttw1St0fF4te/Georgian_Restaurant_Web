@@ -459,6 +459,152 @@ class AuthService {
     const user = this.getUser();
     return user ? allowedRoles.includes(user.role) : false;
   }
+
+  // Получение всех пользователей (для менеджеров и админов)
+  async getAllUsers(): Promise<User[]> {
+    try {
+      const response = await this.api.get<User[]>('/auth/users');
+      return response.data;
+    } catch (error: any) {
+      if (error.response?.status === 401) {
+        throw new Error('Сессия истекла. Войдите в систему снова');
+      } else if (error.response?.status === 403) {
+        throw new Error('Недостаточно прав для просмотра пользователей');
+      } else if (error.response?.status === 500) {
+        throw new Error('Внутренняя ошибка сервера. Попробуйте позже');
+      } else if (error.code === 'NETWORK_ERROR' || !error.response) {
+        throw new Error('Ошибка сети. Проверьте подключение к интернету');
+      }
+      
+      throw new Error(error.response?.data?.message || 'Ошибка получения списка пользователей');
+    }
+  }
+
+  // Создание нового пользователя (только для админов)
+  async createUser(userData: {
+    username: string;
+    email: string;
+    password: string;
+    first_name: string;
+    last_name: string;
+    phone?: string;
+    role_id: number;
+  }): Promise<{ status: string; message: string; user: User; created_at: string }> {
+    try {
+      const response = await this.api.post('/auth/admin/users', userData);
+      return response.data;
+    } catch (error: any) {
+      if (error.response?.status === 400) {
+        const message = error.response.data?.message;
+        if (Array.isArray(message)) {
+          const translatedErrors = message.map((msg: string) => {
+            if (msg.includes('password must be longer than or equal to')) {
+              return 'Пароль должен содержать минимум 6 символов';
+            }
+            if (msg.includes('username must be longer than or equal to')) {
+              return 'Имя пользователя должно содержать минимум 3 символа';
+            }
+            if (msg.includes('email must be an email')) {
+              return 'Введите корректный email адрес';
+            }
+            if (msg.includes('should not be empty')) {
+              if (msg.includes('username')) return 'Введите имя пользователя';
+              if (msg.includes('password')) return 'Введите пароль';
+              if (msg.includes('email')) return 'Введите email';
+              if (msg.includes('first_name')) return 'Введите имя';
+              if (msg.includes('last_name')) return 'Введите фамилию';
+            }
+            return msg;
+          });
+          throw new Error(translatedErrors.join(', '));
+        }
+        throw new Error(message || 'Ошибка валидации данных');
+      } else if (error.response?.status === 401) {
+        throw new Error('Сессия истекла. Войдите в систему снова');
+      } else if (error.response?.status === 403) {
+        throw new Error('Недостаточно прав для создания пользователей');
+      } else if (error.response?.status === 409) {
+        throw new Error('Пользователь с такими данными уже существует');
+      } else if (error.response?.status === 500) {
+        throw new Error('Внутренняя ошибка сервера. Попробуйте позже');
+      } else if (error.code === 'NETWORK_ERROR' || !error.response) {
+        throw new Error('Ошибка сети. Проверьте подключение к интернету');
+      }
+      
+      throw new Error(error.response?.data?.message || 'Ошибка создания пользователя');
+    }
+  }
+
+  // Обновление пользователя (только для админов)
+  async updateUser(userId: string, userData: {
+    username?: string;
+    email?: string;
+    password?: string;
+    first_name?: string;
+    last_name?: string;
+    phone?: string;
+    role_id?: number;
+  }): Promise<{ status: string; message: string; updated_user_id: string }> {
+    try {
+      const response = await this.api.put(`/auth/admin/users/${userId}`, userData);
+      return response.data;
+    } catch (error: any) {
+      if (error.response?.status === 400) {
+        const message = error.response.data?.message;
+        if (Array.isArray(message)) {
+          const translatedErrors = message.map((msg: string) => {
+            if (msg.includes('password must be longer than or equal to')) {
+              return 'Пароль должен содержать минимум 6 символов';
+            }
+            if (msg.includes('username must be longer than or equal to')) {
+              return 'Имя пользователя должно содержать минимум 3 символа';
+            }
+            if (msg.includes('email must be an email')) {
+              return 'Введите корректный email адрес';
+            }
+            return msg;
+          });
+          throw new Error(translatedErrors.join(', '));
+        }
+        throw new Error(message || 'Ошибка валидации данных');
+      } else if (error.response?.status === 401) {
+        throw new Error('Сессия истекла. Войдите в систему снова');
+      } else if (error.response?.status === 403) {
+        throw new Error('Недостаточно прав для редактирования пользователей');
+      } else if (error.response?.status === 409) {
+        throw new Error('Пользователь с такими данными уже существует');
+      } else if (error.response?.status === 500) {
+        throw new Error('Внутренняя ошибка сервера. Попробуйте позже');
+      } else if (error.code === 'NETWORK_ERROR' || !error.response) {
+        throw new Error('Ошибка сети. Проверьте подключение к интернету');
+      }
+      
+      throw new Error(error.response?.data?.message || 'Ошибка обновления пользователя');
+    }
+  }
+
+  // Удаление пользователя (только для админов)
+  async deleteUser(userId: string): Promise<{ status: string; message: string; deleted_user_id: string }> {
+    try {
+      const response = await this.api.delete(`/auth/admin/users/${userId}`);
+      return response.data;
+    } catch (error: any) {
+      if (error.response?.status === 400) {
+        const message = error.response.data?.message || 'Пользователь не может быть удален';
+        throw new Error(message);
+      } else if (error.response?.status === 401) {
+        throw new Error('Сессия истекла. Войдите в систему снова');
+      } else if (error.response?.status === 403) {
+        throw new Error('Недостаточно прав для удаления пользователей');
+      } else if (error.response?.status === 500) {
+        throw new Error('Внутренняя ошибка сервера. Попробуйте позже');
+      } else if (error.code === 'NETWORK_ERROR' || !error.response) {
+        throw new Error('Ошибка сети. Проверьте подключение к интернету');
+      }
+      
+      throw new Error(error.response?.data?.message || 'Ошибка удаления пользователя');
+    }
+  }
 }
 
 // Экспортируем экземпляр сервиса

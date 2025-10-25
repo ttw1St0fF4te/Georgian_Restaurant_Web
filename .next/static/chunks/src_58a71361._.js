@@ -467,6 +467,135 @@ class AuthService {
         const user = this.getUser();
         return user ? allowedRoles.includes(user.role) : false;
     }
+    // Получение всех пользователей (для менеджеров и админов)
+    async getAllUsers() {
+        try {
+            const response = await this.api.get('/auth/users');
+            return response.data;
+        } catch (error) {
+            var _error_response, _error_response1, _error_response2, _error_response_data, _error_response3;
+            if (((_error_response = error.response) === null || _error_response === void 0 ? void 0 : _error_response.status) === 401) {
+                throw new Error('Сессия истекла. Войдите в систему снова');
+            } else if (((_error_response1 = error.response) === null || _error_response1 === void 0 ? void 0 : _error_response1.status) === 403) {
+                throw new Error('Недостаточно прав для просмотра пользователей');
+            } else if (((_error_response2 = error.response) === null || _error_response2 === void 0 ? void 0 : _error_response2.status) === 500) {
+                throw new Error('Внутренняя ошибка сервера. Попробуйте позже');
+            } else if (error.code === 'NETWORK_ERROR' || !error.response) {
+                throw new Error('Ошибка сети. Проверьте подключение к интернету');
+            }
+            throw new Error(((_error_response3 = error.response) === null || _error_response3 === void 0 ? void 0 : (_error_response_data = _error_response3.data) === null || _error_response_data === void 0 ? void 0 : _error_response_data.message) || 'Ошибка получения списка пользователей');
+        }
+    }
+    // Создание нового пользователя (только для админов)
+    async createUser(userData) {
+        try {
+            const response = await this.api.post('/auth/admin/users', userData);
+            return response.data;
+        } catch (error) {
+            var _error_response, _error_response1, _error_response2, _error_response3, _error_response4, _error_response_data, _error_response5;
+            if (((_error_response = error.response) === null || _error_response === void 0 ? void 0 : _error_response.status) === 400) {
+                var _error_response_data1;
+                const message = (_error_response_data1 = error.response.data) === null || _error_response_data1 === void 0 ? void 0 : _error_response_data1.message;
+                if (Array.isArray(message)) {
+                    const translatedErrors = message.map((msg)=>{
+                        if (msg.includes('password must be longer than or equal to')) {
+                            return 'Пароль должен содержать минимум 6 символов';
+                        }
+                        if (msg.includes('username must be longer than or equal to')) {
+                            return 'Имя пользователя должно содержать минимум 3 символа';
+                        }
+                        if (msg.includes('email must be an email')) {
+                            return 'Введите корректный email адрес';
+                        }
+                        if (msg.includes('should not be empty')) {
+                            if (msg.includes('username')) return 'Введите имя пользователя';
+                            if (msg.includes('password')) return 'Введите пароль';
+                            if (msg.includes('email')) return 'Введите email';
+                            if (msg.includes('first_name')) return 'Введите имя';
+                            if (msg.includes('last_name')) return 'Введите фамилию';
+                        }
+                        return msg;
+                    });
+                    throw new Error(translatedErrors.join(', '));
+                }
+                throw new Error(message || 'Ошибка валидации данных');
+            } else if (((_error_response1 = error.response) === null || _error_response1 === void 0 ? void 0 : _error_response1.status) === 401) {
+                throw new Error('Сессия истекла. Войдите в систему снова');
+            } else if (((_error_response2 = error.response) === null || _error_response2 === void 0 ? void 0 : _error_response2.status) === 403) {
+                throw new Error('Недостаточно прав для создания пользователей');
+            } else if (((_error_response3 = error.response) === null || _error_response3 === void 0 ? void 0 : _error_response3.status) === 409) {
+                throw new Error('Пользователь с такими данными уже существует');
+            } else if (((_error_response4 = error.response) === null || _error_response4 === void 0 ? void 0 : _error_response4.status) === 500) {
+                throw new Error('Внутренняя ошибка сервера. Попробуйте позже');
+            } else if (error.code === 'NETWORK_ERROR' || !error.response) {
+                throw new Error('Ошибка сети. Проверьте подключение к интернету');
+            }
+            throw new Error(((_error_response5 = error.response) === null || _error_response5 === void 0 ? void 0 : (_error_response_data = _error_response5.data) === null || _error_response_data === void 0 ? void 0 : _error_response_data.message) || 'Ошибка создания пользователя');
+        }
+    }
+    // Обновление пользователя (только для админов)
+    async updateUser(userId, userData) {
+        try {
+            const response = await this.api.put("/auth/admin/users/".concat(userId), userData);
+            return response.data;
+        } catch (error) {
+            var _error_response, _error_response1, _error_response2, _error_response3, _error_response4, _error_response_data, _error_response5;
+            if (((_error_response = error.response) === null || _error_response === void 0 ? void 0 : _error_response.status) === 400) {
+                var _error_response_data1;
+                const message = (_error_response_data1 = error.response.data) === null || _error_response_data1 === void 0 ? void 0 : _error_response_data1.message;
+                if (Array.isArray(message)) {
+                    const translatedErrors = message.map((msg)=>{
+                        if (msg.includes('password must be longer than or equal to')) {
+                            return 'Пароль должен содержать минимум 6 символов';
+                        }
+                        if (msg.includes('username must be longer than or equal to')) {
+                            return 'Имя пользователя должно содержать минимум 3 символа';
+                        }
+                        if (msg.includes('email must be an email')) {
+                            return 'Введите корректный email адрес';
+                        }
+                        return msg;
+                    });
+                    throw new Error(translatedErrors.join(', '));
+                }
+                throw new Error(message || 'Ошибка валидации данных');
+            } else if (((_error_response1 = error.response) === null || _error_response1 === void 0 ? void 0 : _error_response1.status) === 401) {
+                throw new Error('Сессия истекла. Войдите в систему снова');
+            } else if (((_error_response2 = error.response) === null || _error_response2 === void 0 ? void 0 : _error_response2.status) === 403) {
+                throw new Error('Недостаточно прав для редактирования пользователей');
+            } else if (((_error_response3 = error.response) === null || _error_response3 === void 0 ? void 0 : _error_response3.status) === 409) {
+                throw new Error('Пользователь с такими данными уже существует');
+            } else if (((_error_response4 = error.response) === null || _error_response4 === void 0 ? void 0 : _error_response4.status) === 500) {
+                throw new Error('Внутренняя ошибка сервера. Попробуйте позже');
+            } else if (error.code === 'NETWORK_ERROR' || !error.response) {
+                throw new Error('Ошибка сети. Проверьте подключение к интернету');
+            }
+            throw new Error(((_error_response5 = error.response) === null || _error_response5 === void 0 ? void 0 : (_error_response_data = _error_response5.data) === null || _error_response_data === void 0 ? void 0 : _error_response_data.message) || 'Ошибка обновления пользователя');
+        }
+    }
+    // Удаление пользователя (только для админов)
+    async deleteUser(userId) {
+        try {
+            const response = await this.api.delete("/auth/admin/users/".concat(userId));
+            return response.data;
+        } catch (error) {
+            var _error_response, _error_response1, _error_response2, _error_response3, _error_response_data, _error_response4;
+            if (((_error_response = error.response) === null || _error_response === void 0 ? void 0 : _error_response.status) === 400) {
+                var _error_response_data1;
+                const message = ((_error_response_data1 = error.response.data) === null || _error_response_data1 === void 0 ? void 0 : _error_response_data1.message) || 'Пользователь не может быть удален';
+                throw new Error(message);
+            } else if (((_error_response1 = error.response) === null || _error_response1 === void 0 ? void 0 : _error_response1.status) === 401) {
+                throw new Error('Сессия истекла. Войдите в систему снова');
+            } else if (((_error_response2 = error.response) === null || _error_response2 === void 0 ? void 0 : _error_response2.status) === 403) {
+                throw new Error('Недостаточно прав для удаления пользователей');
+            } else if (((_error_response3 = error.response) === null || _error_response3 === void 0 ? void 0 : _error_response3.status) === 500) {
+                throw new Error('Внутренняя ошибка сервера. Попробуйте позже');
+            } else if (error.code === 'NETWORK_ERROR' || !error.response) {
+                throw new Error('Ошибка сети. Проверьте подключение к интернету');
+            }
+            throw new Error(((_error_response4 = error.response) === null || _error_response4 === void 0 ? void 0 : (_error_response_data = _error_response4.data) === null || _error_response_data === void 0 ? void 0 : _error_response_data.message) || 'Ошибка удаления пользователя');
+        }
+    }
     constructor(){
         (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$swc$2f$helpers$2f$esm$2f$_define_property$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["_"])(this, "TOKEN_KEY", 'georgian_restaurant_token');
         (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$swc$2f$helpers$2f$esm$2f$_define_property$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["_"])(this, "USER_KEY", 'georgian_restaurant_user');
@@ -3449,6 +3578,19 @@ const Header = ()=>{
                 }
             ];
         }
+        // Для админа - специальные пункты навигации
+        if ((user === null || user === void 0 ? void 0 : user.role) === 'admin') {
+            return [
+                {
+                    label: 'Управление пользователями',
+                    path: '/admin/users'
+                },
+                {
+                    label: 'Журнал аудита',
+                    path: '/admin/audit'
+                }
+            ];
+        }
         // Для авторизованных пользователей - добавляем пункты в зависимости от роли
         if ((user === null || user === void 0 ? void 0 : user.role) === 'user') {
             return baseItems; // Профиль будет в выпадающем меню
@@ -3505,7 +3647,7 @@ const Header = ()=>{
                                 }
                             }, void 0, false, {
                                 fileName: "[project]/src/components/layout/Header.tsx",
-                                lineNumber: 101,
+                                lineNumber: 109,
                                 columnNumber: 13
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Typography$2f$Typography$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__["Typography"], {
@@ -3519,13 +3661,13 @@ const Header = ()=>{
                                 children: "Грузинская Кухня"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/layout/Header.tsx",
-                                lineNumber: 102,
+                                lineNumber: 110,
                                 columnNumber: 13
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/layout/Header.tsx",
-                        lineNumber: 100,
+                        lineNumber: 108,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
@@ -3551,7 +3693,7 @@ const Header = ()=>{
                                     children: item.label
                                 }, item.path, false, {
                                     fileName: "[project]/src/components/layout/Header.tsx",
-                                    lineNumber: 118,
+                                    lineNumber: 126,
                                     columnNumber: 15
                                 }, ("TURBOPACK compile-time value", void 0))),
                             isAuthenticated && (user === null || user === void 0 ? void 0 : user.role) === 'user' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$IconButton$2f$IconButton$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__IconButton$3e$__["IconButton"], {
@@ -3567,22 +3709,22 @@ const Header = ()=>{
                                     color: "error",
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$ShoppingCart$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                                         fileName: "[project]/src/components/layout/Header.tsx",
-                                        lineNumber: 149,
+                                        lineNumber: 157,
                                         columnNumber: 19
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/layout/Header.tsx",
-                                    lineNumber: 148,
+                                    lineNumber: 156,
                                     columnNumber: 17
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/src/components/layout/Header.tsx",
-                                lineNumber: 139,
+                                lineNumber: 147,
                                 columnNumber: 15
                             }, ("TURBOPACK compile-time value", void 0)),
                             isAuthenticated && (user === null || user === void 0 ? void 0 : user.role) === 'user' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$reservations$2f$ActiveReservationBadge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                                 fileName: "[project]/src/components/layout/Header.tsx",
-                                lineNumber: 156,
+                                lineNumber: 164,
                                 columnNumber: 15
                             }, ("TURBOPACK compile-time value", void 0)),
                             isAuthenticated && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
@@ -3602,12 +3744,12 @@ const Header = ()=>{
                                                 }
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/layout/Header.tsx",
-                                                lineNumber: 166,
+                                                lineNumber: 174,
                                                 columnNumber: 21
                                             }, void 0)
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/layout/Header.tsx",
-                                            lineNumber: 165,
+                                            lineNumber: 173,
                                             columnNumber: 30
                                         }, void 0),
                                         sx: {
@@ -3621,7 +3763,7 @@ const Header = ()=>{
                                         children: user === null || user === void 0 ? void 0 : user.first_name
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/layout/Header.tsx",
-                                        lineNumber: 162,
+                                        lineNumber: 170,
                                         columnNumber: 17
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Menu$2f$Menu$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Menu$3e$__["Menu"], {
@@ -3646,14 +3788,14 @@ const Header = ()=>{
                                                         }
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/layout/Header.tsx",
-                                                        lineNumber: 195,
+                                                        lineNumber: 203,
                                                         columnNumber: 23
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     "Профиль"
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/layout/Header.tsx",
-                                                lineNumber: 194,
+                                                lineNumber: 202,
                                                 columnNumber: 21
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             (user === null || user === void 0 ? void 0 : user.role) === 'manager' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$MenuItem$2f$MenuItem$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__MenuItem$3e$__["MenuItem"], {
@@ -3668,14 +3810,36 @@ const Header = ()=>{
                                                         }
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/layout/Header.tsx",
-                                                        lineNumber: 202,
+                                                        lineNumber: 210,
                                                         columnNumber: 23
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     "Панель менеджера"
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/layout/Header.tsx",
-                                                lineNumber: 201,
+                                                lineNumber: 209,
+                                                columnNumber: 21
+                                            }, ("TURBOPACK compile-time value", void 0)),
+                                            (user === null || user === void 0 ? void 0 : user.role) === 'admin' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$MenuItem$2f$MenuItem$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__MenuItem$3e$__["MenuItem"], {
+                                                onClick: ()=>{
+                                                    handleProfileMenuClose();
+                                                    router.push('/admin');
+                                                },
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$Person$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                                                        sx: {
+                                                            mr: 1
+                                                        }
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/components/layout/Header.tsx",
+                                                        lineNumber: 217,
+                                                        columnNumber: 25
+                                                    }, ("TURBOPACK compile-time value", void 0)),
+                                                    "Панель админа"
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/src/components/layout/Header.tsx",
+                                                lineNumber: 216,
                                                 columnNumber: 21
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$MenuItem$2f$MenuItem$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__MenuItem$3e$__["MenuItem"], {
@@ -3687,20 +3851,20 @@ const Header = ()=>{
                                                         }
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/layout/Header.tsx",
-                                                        lineNumber: 208,
+                                                        lineNumber: 223,
                                                         columnNumber: 21
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     "Выход"
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/layout/Header.tsx",
-                                                lineNumber: 207,
+                                                lineNumber: 222,
                                                 columnNumber: 19
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/layout/Header.tsx",
-                                        lineNumber: 180,
+                                        lineNumber: 188,
                                         columnNumber: 17
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
@@ -3708,23 +3872,23 @@ const Header = ()=>{
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/layout/Header.tsx",
-                        lineNumber: 116,
+                        lineNumber: 124,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/layout/Header.tsx",
-                lineNumber: 98,
+                lineNumber: 106,
                 columnNumber: 9
             }, ("TURBOPACK compile-time value", void 0))
         }, void 0, false, {
             fileName: "[project]/src/components/layout/Header.tsx",
-            lineNumber: 97,
+            lineNumber: 105,
             columnNumber: 7
         }, ("TURBOPACK compile-time value", void 0))
     }, void 0, false, {
         fileName: "[project]/src/components/layout/Header.tsx",
-        lineNumber: 96,
+        lineNumber: 104,
         columnNumber: 5
     }, ("TURBOPACK compile-time value", void 0));
 };

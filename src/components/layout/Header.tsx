@@ -53,6 +53,14 @@ const Header: React.FC = () => {
       ];
     }
 
+    // Для админа - специальные пункты навигации
+    if (user?.role === 'admin') {
+      return [
+        { label: 'Управление пользователями', path: '/admin/users' },
+        { label: 'Журнал аудита', path: '/admin/audit' },
+      ];
+    }
+
     // Для авторизованных пользователей - добавляем пункты в зависимости от роли
     if (user?.role === 'user') {
       return baseItems; // Профиль будет в выпадающем меню
@@ -201,6 +209,13 @@ const Header: React.FC = () => {
                     <MenuItem onClick={() => { handleProfileMenuClose(); router.push('/manager'); }}>
                       <PersonIcon sx={{ mr: 1 }} />
                       Панель менеджера
+                    </MenuItem>
+                  )}
+                  
+                  {user?.role === 'admin' && (
+                    <MenuItem onClick={() => { handleProfileMenuClose(); router.push('/admin'); }}>
+                        <PersonIcon sx={{ mr: 1 }} />
+                        Панель админа
                     </MenuItem>
                   )}
                   

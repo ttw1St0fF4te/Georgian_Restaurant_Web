@@ -1,5 +1,12 @@
 {
-  "/admin/audit/page": "app/admin/audit/page.js",
-  "/admin/page": "app/admin/page.js",
-  "/page": "app/page.js"
+  "/_not-found/page": "app/_not-found/page.js",
+  "/about/page": "app/about/page.js",
+  "/auth/login/page": "app/auth/login/page.js",
+  "/cart/page": "app/cart/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/page": "app/page.js",
+  "/profile/orders/page": "app/profile/orders/page.js",
+  "/profile/page": "app/profile/page.js",
+  "/profile/reservations/page": "app/profile/reservations/page.js",
+  "/restaurants/page": "app/restaurants/page.js"
 }

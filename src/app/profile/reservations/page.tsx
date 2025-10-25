@@ -163,18 +163,6 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
               </Button>
             </>
           )}
-
-          {reservation.reservation_status === 'started' && (
-            <Button
-              variant="contained"
-              color="primary"
-              startIcon={<ShoppingCartIcon />}
-              size="small"
-              disabled // Пока без функционала
-            >
-              Сделать заказ
-            </Button>
-          )}
         </Box>
       </CardContent>
     </Card>

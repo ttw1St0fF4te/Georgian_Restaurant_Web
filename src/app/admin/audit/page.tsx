@@ -29,9 +29,11 @@ import {
   ArrowBack as ArrowBackIcon,
   Assignment as AuditIcon,
   Refresh as RefreshIcon,
+  Storage as DatabaseIcon,
 } from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
 import { useAuditLogs } from '@/lib/hooks/useAudit';
+import { databaseApi } from '@/lib/api/services';
 import { JsonViewer } from '@/components/audit/JsonViewer';
 import { AuditOperation } from '@/lib/api/types';
 
@@ -63,6 +65,27 @@ const AuditLogPage: React.FC = () => {
 
   const handleRefresh = () => {
     refetch();
+  };
+
+  // Состояние для дампа БД
+  const [dumpLoading, setDumpLoading] = useState(false);
+  const [dumpResult, setDumpResult] = useState<string | null>(null);
+
+  const handleDatabaseDump = async () => {
+    setDumpLoading(true);
+    setDumpResult(null);
+    try {
+      const result = await databaseApi.createDump();
+      if (result.success) {
+        setDumpResult(`Дамп БД создан: ${result.fileName}\nПуть: ${result.filePath}`);
+      } else {
+        setDumpResult('Ошибка: не удалось создать дамп БД');
+      }
+    } catch (error: any) {
+      setDumpResult(`Ошибка создания дампа БД: ${error?.message || error}`);
+    } finally {
+      setDumpLoading(false);
+    }
   };
 
   const getOperationChip = (operation: string) => {
@@ -110,15 +133,40 @@ const AuditLogPage: React.FC = () => {
           </Typography>
         </Box>
         
-        <Button
-          startIcon={<RefreshIcon />}
-          onClick={handleRefresh}
-          variant="outlined"
-          disabled={isLoading}
-        >
-          Обновить
-        </Button>
+        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+          <Button
+            startIcon={<RefreshIcon />}
+            onClick={handleRefresh}
+            variant="outlined"
+            disabled={isLoading}
+          >
+            Обновить
+          </Button>
+          
+          <Button
+            startIcon={dumpLoading ? <CircularProgress size={18} /> : <DatabaseIcon />}
+            onClick={handleDatabaseDump}
+            variant="contained"
+            color="secondary"
+            disabled={dumpLoading}
+          >
+            Дамп БД
+          </Button>
+        </Box>
       </Box>
+
+      {/* Результат дампа БД */}
+      {dumpResult && (
+        <Alert 
+          severity={dumpResult.startsWith('Ошибка') ? 'error' : 'success'} 
+          sx={{ mb: 3 }}
+          onClose={() => setDumpResult(null)}
+        >
+          <Typography variant="body2" sx={{ whiteSpace: 'pre-line' }}>
+            {dumpResult}
+          </Typography>
+        </Alert>
+      )}
 
       {/* Фильтры */}
       <Card sx={{ mb: 3 }}>

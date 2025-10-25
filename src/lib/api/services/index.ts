@@ -1,6 +1,7 @@
 // Экспорт всех API сервисов
 export { healthApi } from './health';
 export { auditApi } from './audit';
+export { databaseApi } from './database';
 export { MenuService } from './menu';
 export { RestaurantService } from './restaurant';
 
